@@ -1,10 +1,10 @@
-import 'package:buspay_owner/Screens/AuthenticationScreen/BusManagerScreen/BusManagerScreen.dart';
-import 'package:buspay_owner/Screens/AuthenticationScreen/BusManagerScreen/NoBusScreen.dart';
-import 'package:buspay_owner/Screens/AuthenticationScreen/CollectionScreen.dart';
-import 'package:buspay_owner/Screens/AuthenticationScreen/ConductorsScreen.dart';
-import 'package:buspay_owner/Screens/AuthenticationScreen/OwnerProfileScreen.dart';
+import 'package:buspay_owner/Screens/BusManagerScreen/BusManagerScreen.dart';
+import 'package:buspay_owner/Screens/CollectionScreen/CollectionScreen.dart';
+import 'package:buspay_owner/Screens/ConductorScreen/ConductorViewScreen.dart';
+import 'package:buspay_owner/Screens/ConductorScreen/NoConductorScreen.dart';
+import 'package:buspay_owner/Screens/OwnerProfileScreen/OwnerProfileScreen.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-//import 'package:dots_indicator/dots_indicator.dart';
+
 import 'package:flutter/material.dart';
 
 
@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromRGBO(252,252,252,1),
       body: SafeArea(
         child: Padding(
           padding:  EdgeInsets.only(left:20,right:20,top:30),
@@ -119,7 +119,7 @@ class HomeScreen extends StatelessWidget {
                                     color: Colors.black,
                                   ),
                                 ),
-                                SizedBox(width: 100),
+                                SizedBox(width: 120),
                                 Container(
                                   height: 30,
                                   width: 73,
@@ -272,13 +272,12 @@ class HomeScreen extends StatelessWidget {
                 childAspectRatio: 162.95 / 116,
                 children: [
                   _buildGridItem(
-                      "Bus Manager", "assets/bus_manager.png", NoBusScreen(), context),
+                      "Bus Manager", "assets/bus_manager.png", BusManagerScreen(), context),
                   _buildGridItem(
-                      "Conductors", "assets/conductors.png", ConductorsScreen(), context),
+                      "Conductors", "assets/conductors.png", ConductorViewScreen(), context),
                   _buildGridItem(
                       "Collections", "assets/collections.png", CollectionScreen(), context),
-                  _buildGridItem("Owner Profile", "assets/owner_profile.png",
-                      OwnerProfileScreen(), context),
+                  _buildGridItem("Owner Profile", "assets/owner_profile.png",OwnerProfileScreen(), context),
                 ],
               ),
               SizedBox(height: 40),

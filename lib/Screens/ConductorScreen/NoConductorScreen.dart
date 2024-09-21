@@ -1,16 +1,19 @@
-import 'package:buspay_owner/Screens/AuthenticationScreen/BusManagerScreen/CreateBusScreen.dart';
+
+import 'package:buspay_owner/Screens/ConductorScreen/ConductorViewScreen.dart';
+import 'package:buspay_owner/Screens/ConductorScreen/CreateConductorScreen.dart';
 import 'package:flutter/material.dart';
 
-class NoBusScreen extends StatelessWidget {
-  const NoBusScreen({super.key});
+class NoConductorScreen extends StatelessWidget {
+  NoConductorScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+         backgroundColor: Color.fromRGBO(252,252,252,1),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(15, 103, 177, 1),
         title: Text(
-          'Bus Manager',
+          'Conductors',
           style: TextStyle(color: Colors.white),
         ),
         leading: IconButton(
@@ -22,7 +25,9 @@ class NoBusScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: Column(
-          children: [SizedBox(height:240 ,),
+          
+          children: [SizedBox
+          (height:240 ,),
             Center(
               child: Image.asset(
                 'assets/nobus.png', 
@@ -33,7 +38,7 @@ class NoBusScreen extends StatelessWidget {
               
             ),
             //SizedBox(height:2)
-            Text("NO Bus Yet !",
+            Text("NO Conductor Yet !",
             style: TextStyle(
               fontFamily: "Inter",
               fontSize: 14,
@@ -41,7 +46,7 @@ class NoBusScreen extends StatelessWidget {
               color: Color.fromRGBO(0,0,0,0.43),
 
             ),),
-            Text("Add  bus to continue",
+            Text("Add conductor to continue",
             style: TextStyle(
               fontFamily: "Inter",
               fontSize: 12,
@@ -62,12 +67,12 @@ class NoBusScreen extends StatelessWidget {
                      Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CreateBusScreen(),
+                      builder: (context) => CreateConductorScreen(),
                     ),
                   );
                     },
                     child: const Text(
-                      'Create Bus',
+                      'Create Conductor',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,

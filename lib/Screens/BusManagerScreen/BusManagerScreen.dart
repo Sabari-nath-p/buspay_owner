@@ -1,5 +1,7 @@
-import 'package:buspay_owner/Screens/AuthenticationScreen/BusManagerScreen/BusViewScreen.dart';
-import 'package:buspay_owner/Screens/AuthenticationScreen/BusManagerScreen/CreateBusScreen.dart';
+
+
+import 'package:buspay_owner/Screens/BusManagerScreen/CreateBusScreen.dart';
+import 'package:buspay_owner/Screens/BusManagerScreen/BusViewScreen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -10,6 +12,7 @@ class BusManagerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+         backgroundColor: Color.fromRGBO(252,252,252,1),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(15,103,177,1), 
         title: Text(

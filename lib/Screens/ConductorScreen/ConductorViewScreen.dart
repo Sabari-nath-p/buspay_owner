@@ -1,17 +1,20 @@
+import 'package:buspay_owner/Screens/ConductorScreen/CreateConductorScreen.dart';
+import 'package:buspay_owner/Screens/ConductorScreen/EditConductorScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class ConductorsScreen extends StatefulWidget {
-  const ConductorsScreen({super.key});
+class ConductorViewScreen extends StatefulWidget {
+  const ConductorViewScreen({super.key});
 
   @override
-  State<ConductorsScreen> createState() => _ConductorsScreenState();
+  State<ConductorViewScreen> createState() => _ConductorViewScreenState();
 }
 
-class _ConductorsScreenState extends State<ConductorsScreen> {
+class _ConductorViewScreenState extends State<ConductorViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+         backgroundColor: Color.fromRGBO(252,252,252,1),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(15, 103, 177, 1),
         title: Text(
@@ -26,6 +29,7 @@ class _ConductorsScreenState extends State<ConductorsScreen> {
         ),
       ),
       body: SafeArea(
+
         child: Column(
           children: [
             
@@ -76,15 +80,15 @@ class _ConductorsScreenState extends State<ConductorsScreen> {
               margin: EdgeInsets.only(bottom: 16),
               child: ElevatedButton(
                 onPressed: () {
-                 // Navigator.push(
-                   // context,
-                    //MaterialPageRoute(
-                      //builder: (context) => CreateBusScreen(),
-                    //),
-                  //);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateConductorScreen(),
+                    ),
+                );
                 },
                 child: Text(
-                  'Create Conductors',
+                  'Create Conductor',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -120,10 +124,19 @@ class CustomCardWidget extends StatelessWidget {
       
       ),
       child: ListTile(
-        leading: CircleAvatar(
-  backgroundImage: AssetImage('assets/profileimage.png'),
-  radius: 28, 
-),
+        leading: GestureDetector(
+          onTap: () {
+           
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EditConductorScreen()),
+            );
+          },
+          child: CircleAvatar(
+            backgroundImage: AssetImage('assets/profileimage.png'),
+            radius: 28, 
+          ),
+        ),
 
         title: Text("KIMS",style: TextStyle(
                   fontWeight: FontWeight.w600,

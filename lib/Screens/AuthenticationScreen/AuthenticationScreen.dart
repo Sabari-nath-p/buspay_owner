@@ -20,6 +20,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     );
 
     return Scaffold(
+         backgroundColor: Color.fromRGBO(252,252,252,1),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Stack(
