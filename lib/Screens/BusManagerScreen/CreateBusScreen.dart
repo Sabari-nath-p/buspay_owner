@@ -3,6 +3,7 @@ import 'package:buspay_owner/Screens/BusManagerScreen/CreateBusController.dart';
 import 'package:buspay_owner/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:buspay_owner/Screens/BusManagerScreen/BusManagerScreen.dart';
@@ -16,17 +17,18 @@ class CreateBusScreen extends StatefulWidget {
 }
 
 class _CreateBusScreenState extends State<CreateBusScreen> {
-  String? selectedDistrict;
+  int? selectedDistrict;
   String? selectedState;
-  String? selectedBusType;
+  int? selectedBusType;
   final List<String> states = ['Kerala'];
-  final Set<String> selectedPreferences = {};
-  List<String> districts = [];
-  List<String> busTypes = [];
-  List<String> preferences = [];
+  List selectedPreferences = [];
+  List districts = [];
+  List busTypes = [];
+  List preferences = [];
   final TextEditingController busNameController = TextEditingController();
   final TextEditingController rcNumberController = TextEditingController();
-  final TextEditingController seatingCapacityController = TextEditingController();
+  final TextEditingController seatingCapacityController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -37,10 +39,10 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
   }
 
   Future<void> fetchDistricts() async {
-    final response = await http.get(Uri.parse(baseUrl +'/v1/districts'));
+    final response = await http.get(Uri.parse(baseUrl + '/v1/districts'));
     if (response.statusCode == 200) {
       setState(() {
-        districts = List<String>.from(json.decode(response.body)['data'].map((district) => district['name']));
+        districts = json.decode(response.body)['data'];
       });
     } else {
       throw Exception('Failed to load districts');
@@ -48,10 +50,11 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
   }
 
   Future<void> fetchBusTypes() async {
-    final response = await http.get(Uri.parse('http://api.buspay.co/v1/bus-type'));
+    final response =
+        await http.get(Uri.parse('http://api.buspay.co/v1/bus-type'));
     if (response.statusCode == 200) {
       setState(() {
-        busTypes = List<String>.from(json.decode(response.body)['data'].map((busTypes) => busTypes['type']));
+        busTypes = json.decode(response.body)['data'];
       });
     } else {
       throw Exception('Failed to load bus types');
@@ -59,17 +62,18 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
   }
 
   Future<void> fetchBusPreferences() async {
-    final response = await http.get(Uri.parse('http://api.buspay.co/v1/preference'));
+    final response =
+        await http.get(Uri.parse('http://api.buspay.co/v1/preference'));
     if (response.statusCode == 200) {
       setState(() {
-        preferences = List<String>.from(json.decode(response.body)['data'].map((pref) => pref['name']));
+        preferences = json.decode(response.body)['data'];
       });
     } else {
       throw Exception('Failed to load bus preferences');
     }
   }
 
-  void toggleBusPreference(String preference) {
+  void toggleBusPreference(preference) {
     setState(() {
       if (selectedPreferences.contains(preference)) {
         selectedPreferences.remove(preference);
@@ -78,58 +82,54 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
       }
     });
   }
-       
-    Future<void> createBus() async {
+
+  Future<void> createBus() async {
     if (busNameController.text.isEmpty ||
         rcNumberController.text.isEmpty ||
         seatingCapacityController.text.isEmpty ||
         selectedState == null ||
         selectedDistrict == null ||
         selectedBusType == null) {
-      
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill all data')),
-
       );
       return;
-
     }
-     SharedPreferences pref = await SharedPreferences.getInstance();
-     String token = pref.getString("accessToken").toString();
-      final busData = {
-      'bus_name': busNameController.text,
-      'rc_number': rcNumberController.text,
-      'seating_capacity': seatingCapacityController.text,
-      'state': selectedState,
-      'district': selectedDistrict,
-      'bus_type': selectedBusType,
-      'preferences': selectedPreferences.toList(),
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString("accessToken").toString();
+    final busData = {
+      'name': busNameController.text,
+      'bus_no': rcNumberController.text,
+      'no_of_seats': int.parse(seatingCapacityController.text),
+      // 'state': selectedState,
+      'district_id': selectedDistrict,
+      'bus_type_id': selectedBusType,
+      'prefernce_ids': selectedPreferences.map((value) => value["id"]).toList(),
     };
 
     final response = await http.post(
-      Uri.parse(baseUrl+'/v1/bus'), 
+      Uri.parse(baseUrl + '/v1/bus'),
       headers: <String, String>{
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token' 
+        'Accept': "application/json",
+        'Authorization': 'Bearer $token'
       },
       body: json.encode(busData),
     );
-      print(busData);
-    if (response.statusCode == 200) {
-   
-      Navigator.push(
+    print(busData);
+    if (response.statusCode == 201) {
+      Navigator.pop(
         context,
-        MaterialPageRoute(builder: (context) => const BusManagerScreen()),
       );
     } else {
       print(response.body);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to create bus. Please try again.')),
+        const SnackBar(
+            content: Text('Failed to create bus. Please try again.')),
       );
     }
   }
-  
-          
+
   Widget buildTextField({
     required String labelText,
     required String hintText,
@@ -141,12 +141,14 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
         SizedBox(height: 8.h),
         Text(
           labelText,
-          style: GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w500),
+          style:
+              GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w500),
         ),
         SizedBox(height: 8.h),
         Container(
           height: 48.h,
           width: 327.w,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
             color: const Color.fromARGB(255, 222, 222, 222),
             borderRadius: BorderRadius.circular(8),
@@ -154,8 +156,11 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
           ),
           child: TextField(
             controller: controller,
+            textAlignVertical: TextAlignVertical.center,
+            textAlign: TextAlign.start,
             decoration: InputDecoration(
               isDense: true,
+              isCollapsed: true,
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
               hintText: hintText,
@@ -176,33 +181,38 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
     );
   }
 
-  Widget buildDropdown({
-    required String labelText,
-    required String hintText,
-    String? value,
-    required List<String> items,
-    required Function(String?) onChanged,
-  }) {
+  Widget buildDropdown(
+      {required String labelText,
+      required String hintText,
+      var value,
+      required List items,
+      required Function(dynamic) onChanged,
+      String fieldName = "",
+      String keyId = ""}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 8.h),
         Text(
           labelText,
-          style: GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w500),
+          style:
+              GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w500),
         ),
         SizedBox(height: 8.h),
         Container(
           height: 48.h,
           width: 327.w,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
             color: const Color.fromARGB(255, 222, 222, 222),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: const Color.fromRGBO(242, 244, 245, 1)),
           ),
-          child: DropdownButtonFormField<String>(
+          child: DropdownButtonFormField<dynamic>(
             value: value,
             decoration: InputDecoration(
+              isCollapsed: true,
+              isDense: true,
               contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
               border: InputBorder.none,
               hintText: hintText,
@@ -211,13 +221,13 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                 fontSize: 14.sp,
               ),
             ),
-            items: items.map((String item) {
-              return DropdownMenuItem<String>(
-                value: item,
+            items: items.map((item) {
+              return DropdownMenuItem(
+                value: (keyId == "") ? item : item[keyId],
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 18.w),
                   child: Text(
-                    item,
+                    (fieldName == "") ? item : item[fieldName],
                     style: GoogleFonts.inter(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w400,
@@ -250,7 +260,8 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
+          icon: const Icon(Icons.arrow_back_ios_new_outlined,
+              color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -288,6 +299,8 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                 hintText: 'Select route district',
                 value: selectedDistrict,
                 items: districts,
+                fieldName: 'name',
+                keyId: 'id',
                 onChanged: (newValue) {
                   setState(() {
                     selectedDistrict = newValue;
@@ -304,6 +317,8 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                 hintText: 'Select route',
                 value: selectedBusType,
                 items: busTypes,
+                fieldName: 'type',
+                keyId: 'id',
                 onChanged: (newValue) {
                   setState(() {
                     selectedBusType = newValue;
@@ -341,7 +356,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                         ),
                         child: Center(
                           child: Text(
-                            pref,
+                            pref["name"],
                             style: TextStyle(
                               color: isSelected ? Colors.white : Colors.black,
                               fontFamily: "Inter",
@@ -363,7 +378,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                     backgroundColor: const Color.fromRGBO(15, 103, 177, 1),
                     minimumSize: Size(327.w, 48.h),
                   ),
-                 onPressed: createBus,
+                  onPressed: createBus,
                   child: const Text(
                     'Create Bus',
                     style: TextStyle(
