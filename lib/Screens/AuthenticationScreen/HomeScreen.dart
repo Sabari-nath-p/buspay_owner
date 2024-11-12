@@ -1,7 +1,7 @@
 import 'package:buspay_owner/Screens/BusManagerScreen/BusManagerScreen.dart';
 import 'package:buspay_owner/Screens/CollectionScreen/CollectionScreen.dart';
 import 'package:buspay_owner/Screens/ConductorScreen/ConductorViewScreen.dart';
-import 'package:buspay_owner/Screens/ConductorScreen/NoConductorScreen.dart';
+//import 'package:buspay_owner/Screens/ConductorScreen/NoConductorScreen.dart';
 import 'package:buspay_owner/Screens/OwnerProfileScreen/OwnerProfileScreen.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 

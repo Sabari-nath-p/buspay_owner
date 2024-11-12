@@ -1,5 +1,5 @@
 import 'package:buspay_owner/Screens/ConductorScreen/ConductorViewScreen.dart';
-import 'package:buspay_owner/Screens/ConductorScreen/EditConductorScreen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';

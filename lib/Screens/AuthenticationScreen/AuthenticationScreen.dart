@@ -1,6 +1,9 @@
-import 'package:buspay_owner/Screens/AuthenticationScreen/HomeScreen.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'controller.dart';
+import 'HomeScreen.dart';
 
 class AuthenticationScreen extends StatefulWidget {
   @override
@@ -8,19 +11,45 @@ class AuthenticationScreen extends StatefulWidget {
 }
 
 class _AuthenticationScreenState extends State<AuthenticationScreen> {
-  bool darkMode = false;
   bool _obscureText = true;
-  bool _rememberMe = false; 
+  bool _rememberMe = false;
+  final AuthenticationController _authController = AuthenticationController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  Future<void> handleLogin() async {
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+      _showSnackBar('Email and password cannot be empty');
+      return;
+    }
+
+    try {
+      final response = await _authController.login(emailController.text, passwordController.text);
+      if (response['success']) {
+        _showSnackBar('Login successful');
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeScreen()));
+      } else {
+        _showSnackBar(response['error'] ?? 'Login failed. Invalid credentials.');
+      }
+    } catch (e) {
+      _showSnackBar('An error occurred: $e');
+    }
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+
   @override
   Widget build(BuildContext context) {
-   
     ScreenUtil.init(
       context,
-      designSize: Size(375, 812), 
+      designSize: Size(375, 812),
     );
 
     return Scaffold(
-         backgroundColor: Color.fromRGBO(252,252,252,1),
+      backgroundColor: Color.fromRGBO(252,252,252,1),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Stack(
@@ -29,7 +58,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    height: 397.h, 
+                    height: 397.h,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(15, 103, 177, 1),
@@ -42,7 +71,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                       children: [
                         Positioned(
                           top: 75.h,
-                          left: (375 / 2).w - 14.w, 
+                          left: (375 / 2).w - 14.w,
                           child: Image.asset(
                             'assets/logo.png',
                             width: 28.w,
@@ -61,7 +90,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                 'Sign in to your',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 32.sp, 
+                                  fontSize: 32.sp,
                                   fontFamily: 'Inter',
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -71,7 +100,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                 'Account',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 32.sp, 
+                                  fontSize: 32.sp,
                                   fontFamily: 'Inter',
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -84,7 +113,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                   "Enter your email and password to log in",
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 12.sp, 
+                                    fontSize: 12.sp,
                                     fontFamily: 'Inter',
                                   ),
                                   textAlign: TextAlign.center,
@@ -123,7 +152,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               ),
                             ),
                             Text(
-                              "login Now",
+                              "Login Now",
                               style: TextStyle(
                                 color: Color(0xFF6C7278),
                                 fontSize: 12.sp,
@@ -149,6 +178,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                             width: double.infinity,
                             height: 46.h,
                             child: TextField(
+                              controller: emailController,
                               decoration: InputDecoration(
                                 hintText: 'Enter your email',
                                 contentPadding: EdgeInsets.symmetric(
@@ -170,6 +200,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                             width: double.infinity,
                             height: 46.h,
                             child: TextField(
+                              controller: passwordController,
                               obscureText: _obscureText,
                               decoration: InputDecoration(
                                 hintText: 'Enter your password',
@@ -210,8 +241,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                       _rememberMe = value!;
                                     });
                                   },
-                                  activeColor: Color(0xFF0F67B1), 
-                                  checkColor: Colors.white, 
+                                  activeColor: Color(0xFF0F67B1),
+                                  checkColor: Colors.white,
                                 ),
                                 Text(
                                   'Remember me',
@@ -238,10 +269,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         SizedBox(height: 24.h),
                         Center(
                           child: ElevatedButton(
-                            onPressed: () {Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()), 
-      );},
+                            onPressed: handleLogin,  
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFF0F67B1),
                               minimumSize: Size(double.infinity, 48.h),

@@ -20,7 +20,7 @@ class _BusViewScreenState extends State<BusViewScreen> {
   bool pushBackSeatSelected = false;
 
   final List<String> states = ['Kerala', 'Karnataka', 'Tamilnadu'];
-  final List<String> districts = ['Alappuzha', 'Ernakulam', 'Malappuram'];
+  final List<String> districts = [];
 
   // Bus preference logic 
   
