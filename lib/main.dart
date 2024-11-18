@@ -1,5 +1,6 @@
 import 'package:buspay_owner/Screens/AuthenticationScreen/AuthenticationScreen.dart';
 import 'package:buspay_owner/Screens/AuthenticationScreen/HomeScreen.dart';
+import 'package:buspay_owner/Screens/BusManagerScreen/CreateBusScreen.dart';
 import 'package:buspay_owner/Screens/ConductorScreen/CreateConductorScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +23,7 @@ class buspay_owner extends StatelessWidget {
       
     return ScreenUtilInit(
       designSize: const Size(390,850),
-      builder : (context,child)=>MaterialApp(home: (login=="IN")?HomeScreen(): AuthenticationScreen()),
+      builder : (context,child)=>MaterialApp(home: (login=="IN")?CreateConductorScreen(): AuthenticationScreen()),
     );
   }
 }

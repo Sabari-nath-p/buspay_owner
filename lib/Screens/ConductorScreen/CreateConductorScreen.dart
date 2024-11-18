@@ -4,7 +4,8 @@ import 'dart:ffi';
 
 import 'package:buspay_owner/Screens/ConductorScreen/ConductorViewScreen.dart';
 import 'package:buspay_owner/main.dart';
-import 'package:http/http.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart'as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,9 +21,10 @@ class CreateConductorScreen extends StatefulWidget {
 }
 
 class _CreateConductorScreenState extends State<CreateConductorScreen> {
-String? BusAssign;
-final List<String> AssignedBus=["Air", "AC", "Non AC", "AC"];
+int? BusAssign;
+
 List Assign=[];
+
 TextEditingController namecontroller=TextEditingController();
 TextEditingController phcontroller=TextEditingController();
 TextEditingController mailcontroller=TextEditingController();
@@ -34,22 +36,36 @@ TextEditingController confirmpasscontroller=TextEditingController();
   @override
    void initState(){
     super.initState();
+    fetchData();
+    
     
    }
-  //  void assignedbus()async{
-  //   final Response=await http.get(Uri.parse(baseUrl + '/v1/add-new-conductor'));
-  //   if(Response.statusCode==200){
-  //     setState(() {
-  //       Assign=json.decode(Response.body)["data"];
-  //     });
-  //   }
-  //   else{
-  //     throw Exception("unable to load data");
-  //   }
-  //  }
+   Future<void> fetchData() async {
+   final Response = await http.get(Uri.parse(baseUrl+"/v1/bus"));
+   if(Response.statusCode==200){
+    setState(() {
+      
+     Assign =json.decode(Response.body)["data"] ;
+   
+    });
+   }
+   else{
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Unable to load data")));
+     
+   }
+    
+   }
+   
+ 
+  
 
    void createconductor()async{
-    if(namecontroller.text.isEmpty||phcontroller.text.isEmpty||mailcontroller.text.isEmpty||Passwordcontroller.text.isEmpty||confirmpasscontroller.text.isEmpty||BusAssign==null){
+    if(namecontroller.text.isEmpty||
+    phcontroller.text.isEmpty||
+    mailcontroller.text.isEmpty||
+    Passwordcontroller.text.isEmpty||
+    confirmpasscontroller.text.isEmpty||BusAssign==null
+    ){
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please Fill all data")));
       return;
     }
@@ -59,26 +75,34 @@ TextEditingController confirmpasscontroller=TextEditingController();
     "name": namecontroller.text,
     "phone":phcontroller.text ,
     "email": mailcontroller.text,
-    // "bus_id": ,
+     "bus_id":BusAssign ,
     "password": Passwordcontroller.text,
   };
-  final Response = await post(Uri.parse(baseUrl + "/v1/add-new-conductor"),headers: {
+  final Response = await http.post(Uri.parse(baseUrl +"/v1/user/add-new-conductor"),headers: {
     'Content-Type': 'application/json',
     "Authorization" : "Bearer $token",
-  },body: json.encode(conductor),
-  );
+  },body: json.encode(conductor),);
+  print('Request Data: ${json.encode(conductor)}');
+
+   print(token);
+
+    print('Response Code: ${Response.statusCode}');
+    print('Response Body: ${Response.body}');
+
+  
    if (Response.statusCode == 201) {
+   
       Navigator.pop(
         context,
       );
     } else {
     
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+         SnackBar(
             content: Text('Failed to create bus. Please try again.')),
       );
     }
-  
+   print(Response.body);
 
    }
 
@@ -113,7 +137,12 @@ TextEditingController confirmpasscontroller=TextEditingController();
            buildTextField(labelText: "Conductor Name", hintText: "Enter Conductor Name",controller: namecontroller),
             buildTextField(labelText: "Conductor Phone", hintText: "Enter Conductor Phone",controller: phcontroller),
              buildTextField(labelText: "Conductor Mail", hintText: "Enter Conductor mail",controller: mailcontroller),
-              buildDropdown(labelText: "Assigned Bus", hintText: "Assigned bus", items: AssignedBus, value: BusAssign,
+              buildDropdown(labelText: "Assigned Bus", 
+              hintText: "Assigned bus",
+               items: Assign,
+                value: BusAssign,
+                fieldName: "name",
+                keyId: "id",
               onChanged: (newValue){
                 setState(() {
                   BusAssign = newValue;
@@ -121,20 +150,26 @@ TextEditingController confirmpasscontroller=TextEditingController();
               }
               ),
                  buildTextField(labelText: "Password", hintText: "Enter Password",controller: Passwordcontroller),
-                  buildTextField(labelText: "Confirm Password", hintText: "Enter Password",controller: Passwordcontroller),
+                  buildTextField(labelText: "Confirm Password", hintText: "Enter Password",controller: confirmpasscontroller),
                   SizedBox(height: 105.h),
                   Container(
                       width: 323.74,
                       height: 40,
                       margin: EdgeInsets.only(bottom:23,left:33,right:33),
-                      child: ElevatedButton(
+                      child:
+                      
+                      
+                      ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                       context,
-                        MaterialPageRoute(
-                          builder: (context) => ConductorViewScreen(),
-                        ),
-                     );
+                          
+                          if(Passwordcontroller.text==confirmpasscontroller.text)
+                         createconductor(); else{
+                       ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Incorrect password.')),
+      );
+
+                     }
                         },
                         child: Text(
                           'Create Conductor',
@@ -303,7 +338,7 @@ Widget buildTextField({
             ),
             items: items.map((item) {
               return DropdownMenuItem(
-                value: (keyId == "") ? item : item[keyId],
+                value: (keyId == " ") ? item : item[keyId],
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 18.w),
                   child: Text(
