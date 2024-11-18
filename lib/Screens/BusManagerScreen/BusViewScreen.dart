@@ -1,11 +1,14 @@
  
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:buspay_owner/Screens/BusManagerScreen/BusManagerScreen.dart';
+import 'package:buspay_owner/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BusViewScreen extends StatefulWidget {
-  const BusViewScreen({Key? key}) : super(key: key);
+  const BusViewScreen({Key? key, required String status}) : super(key: key);
 
   @override
   _BusViewScreenState createState() => _BusViewScreenState();
@@ -14,23 +17,76 @@ class BusViewScreen extends StatefulWidget {
 class _BusViewScreenState extends State<BusViewScreen> {
   String? selectedState;
   String? selectedDistrict;
+   int? selectedBusType;
  Set<String> selectedDays = {};
   bool airBusSelected = false;
   bool acBusSelected = false;
   bool pushBackSeatSelected = false;
 
-  final List<String> states = ['Kerala', 'Karnataka', 'Tamilnadu'];
-  final List<String> districts = [];
+  final List<String> states = ['Kerala'];
+   List districts = [];
+   List selectedPreferences = [];
+  List busTypes = [];
+  List preferences = [];
+  final TextEditingController busNameController = TextEditingController();
+  final TextEditingController rcNumberController = TextEditingController();
+  final TextEditingController seatingCapacityController =TextEditingController();
 
-  // Bus preference logic 
-  
-void selectBusPreference(String busType) {
+
+@override
+  void initState() {
+    super.initState();
+    fetchDistricts();
+    fetchBusTypes();
+    fetchBusPreferences();
+  }
+
+  Future<void> fetchDistricts() async {
+    final response = await http.get(Uri.parse(baseUrl + '/v1/districts'));
+    if (response.statusCode == 200) {
+      setState(() {
+        districts = json.decode(response.body)['data'];
+      });
+    } else {
+      throw Exception('Failed to load districts');
+    }
+  }
+
+  Future<void> fetchBusTypes() async {
+    final response =
+        await http.get(Uri.parse(baseUrl +'/v1/bus-type'));
+    if (response.statusCode == 200) {
+      setState(() {
+        busTypes = json.decode(response.body)['data'];
+      });
+    } else {
+      throw Exception('Failed to load bus types');
+    }
+  }
+
+  Future<void> fetchBusPreferences() async {
+    final response =
+        await http.get(Uri.parse(baseUrl+'v1/preference'));
+    if (response.statusCode == 200) {
+      setState(() {
+        preferences = json.decode(response.body)['data'];
+      });
+    } else {
+      throw Exception('Failed to load bus preferences');
+    }
+  }
+
+  void toggleBusPreference(preference) {
     setState(() {
-      airBusSelected = (busType == 'Air Bus');
-      acBusSelected = (busType == 'AC Bus');
-      pushBackSeatSelected = (busType == 'Push Back Seat');
+      if (selectedPreferences.contains(preference)) {
+        selectedPreferences.remove(preference);
+      } else {
+        selectedPreferences.add(preference);
+      }
     });
   }
+  
+
 
   void _showBottomSheet(BuildContext context) {
   showModalBottomSheet(
@@ -331,6 +387,11 @@ void selectBusPreference(String busType) {
     ),
   );
 }
+  
+
+
+
+
 
  
 Widget buildTextField({
@@ -378,34 +439,42 @@ Widget buildTextField({
     );
   }
 
-  // Dropdown widget
-  Widget buildDropdown({
-    required String labelText,
-    required String hintText,
-    String? value,
-    required List<String> items,
-    required Function(String?) onChanged,
-  }) {
+  
+
+  // Dropdown 
+  
+    Widget buildDropdown(
+      {required String labelText,
+      required String hintText,
+      var value,
+      required List items,
+      required Function(dynamic) onChanged,
+      String fieldName = "",
+      String keyId = ""}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 8.h),
         Text(
           labelText,
-          style: GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w500),
+          style:
+              GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w500),
         ),
         SizedBox(height: 8.h),
         Container(
           height: 48.h,
           width: 327.w,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
             color: const Color.fromARGB(255, 222, 222, 222),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: const Color.fromRGBO(242, 244, 245, 1)),
           ),
-          child: DropdownButtonFormField<String>(
+          child: DropdownButtonFormField<dynamic>(
             value: value,
             decoration: InputDecoration(
+              isCollapsed: true,
+              isDense: true,
               contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
               border: InputBorder.none,
               hintText: hintText,
@@ -413,15 +482,14 @@ Widget buildTextField({
                 color: Colors.grey[600],
                 fontSize: 14.sp,
               ),
-               alignLabelWithHint: true,
             ),
-            items: items.map((String item) {
-              return DropdownMenuItem<String>(
-                value: item,
+            items: items.map((item) {
+              return DropdownMenuItem(
+                value: (keyId == "") ? item : item[keyId],
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 18.w),
                   child: Text(
-                    item,
+                    (fieldName == "") ? item : item[fieldName],
                     style: GoogleFonts.inter(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w400,
@@ -431,22 +499,21 @@ Widget buildTextField({
               );
             }).toList(),
             onChanged: onChanged,
-             hint: Align( 
-            alignment: Alignment.centerRight,
-            child: Text(
-              hintText,
-              style: GoogleFonts.inter(
-                color: Colors.grey[600],
-                fontSize: 14.sp,
-              ),
-            ),
-          ),
           ),
         ),
         SizedBox(height: 16.h),
       ],
     );
   }
+
+
+
+
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -479,13 +546,15 @@ Widget buildTextField({
               buildTextField(
                 labelText: 'Bus Name',
                 hintText: 'Enter bus name',
+                 controller: busNameController,
               ),
               buildTextField(
                 labelText: 'RC Number',
                 hintText: 'Enter bus RC number',
+                controller: rcNumberController,
               ),
               buildDropdown(
-                labelText: 'State',
+                labelText: 'State*',
                 hintText: 'Select route state',
                 value: selectedState,
                 items: states,
@@ -496,10 +565,12 @@ Widget buildTextField({
                 },
               ),
               buildDropdown(
-                labelText: 'District',
+                labelText: 'District*',
                 hintText: 'Select route district',
                 value: selectedDistrict,
                 items: districts,
+                fieldName: 'name',
+                keyId: 'id',
                 onChanged: (newValue) {
                   setState(() {
                     selectedDistrict = newValue;
@@ -509,6 +580,19 @@ Widget buildTextField({
               buildTextField(
                 labelText: 'Seating Capacity',
                 hintText: 'Enter seating capacity',
+              ),
+              buildDropdown(
+                labelText: 'Bus  Type',
+                hintText: 'Select route ',
+                value: selectedDistrict,
+                items: busTypes,
+                fieldName: 'type',
+                keyId: 'id',
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedDistrict = newValue;
+                  });
+                },
               ),
               const Text(
                 'Bus Preference',
@@ -520,14 +604,40 @@ Widget buildTextField({
                 ),
               ),
               SizedBox(height: 8.h),
-              Row(
-                children: [
-                  buildPreferenceButton('Air Bus', airBusSelected),
-                  SizedBox(width: 10.w),
-                  buildPreferenceButton('AC Bus', acBusSelected),
-                  SizedBox(width: 10.w),
-                  buildPreferenceButton('Push Back Seat', pushBackSeatSelected),
-                ],
+             Row(
+                children: preferences.map((pref) {
+                  bool isSelected = selectedPreferences.contains(pref);
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () => toggleBusPreference(pref),
+                      child: Container(
+                        height: 40.h,
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? const Color.fromRGBO(15, 103, 177, 1)
+                              : const Color.fromRGBO(246, 248, 250, 1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: isSelected
+                                ? const Color.fromRGBO(15, 103, 177, 1)
+                                : const Color.fromRGBO(242, 244, 245, 1),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            pref["name"],
+                            style: TextStyle(
+                              color: isSelected ? Colors.white : Colors.black,
+                              fontFamily: "Inter",
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
               SizedBox(height: 20.h),
            
@@ -712,31 +822,4 @@ Container(
   }
 
   
-  Widget buildPreferenceButton(String title, bool isSelected) {
-    return GestureDetector(
-      onTap: () => selectBusPreference(title),
-      child: Container(
-        height: 33.h,
-        width: (title == 'Push Back Seat') ? 120.w : 87.w,
-        decoration: BoxDecoration(
-          color: isSelected
-              ? const Color.fromRGBO(15, 103, 177, 1)
-              : const Color.fromARGB(255, 222, 222, 222),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Center(
-          child: Text(
-            title,
-            style: GoogleFonts.inter(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w400,
-              color: isSelected
-                  ? const Color.fromRGBO(255, 255, 255, 1)
-                  : const Color.fromRGBO(60, 60, 67, 0.6),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }

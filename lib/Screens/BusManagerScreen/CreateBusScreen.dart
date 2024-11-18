@@ -1,12 +1,12 @@
 import 'dart:convert';
-import 'package:buspay_owner/Screens/BusManagerScreen/CreateBusController.dart';
+//import 'package:buspay_owner/Screens/BusManagerScreen/CreateBusController.dart';
 import 'package:buspay_owner/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+//import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:buspay_owner/Screens/BusManagerScreen/BusManagerScreen.dart';
+//import 'package:buspay_owner/Screens/BusManagerScreen/BusManagerScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateBusScreen extends StatefulWidget {
@@ -27,8 +27,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
   List preferences = [];
   final TextEditingController busNameController = TextEditingController();
   final TextEditingController rcNumberController = TextEditingController();
-  final TextEditingController seatingCapacityController =
-      TextEditingController();
+  final TextEditingController seatingCapacityController =TextEditingController();
 
   @override
   void initState() {
@@ -51,7 +50,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
 
   Future<void> fetchBusTypes() async {
     final response =
-        await http.get(Uri.parse('http://api.buspay.co/v1/bus-type'));
+        await http.get(Uri.parse(baseUrl +'/v1/bus-type'));
     if (response.statusCode == 200) {
       setState(() {
         busTypes = json.decode(response.body)['data'];
@@ -97,6 +96,13 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
     }
     SharedPreferences pref = await SharedPreferences.getInstance();
     String token = pref.getString("accessToken").toString();
+    if (token == null || token.isEmpty) {
+    print("Token is missing or invalid.");
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('User not authenticated. Please login.')),
+    );
+    return;
+  }
     final busData = {
       'name': busNameController.text,
       'bus_no': rcNumberController.text,
@@ -106,28 +112,40 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
       'bus_type_id': selectedBusType,
       'prefernce_ids': selectedPreferences.map((value) => value["id"]).toList(),
     };
-
+     print("Authorization Token: Bearer $token");
+    print("Requesting with data: $busData");
+       try {
     final response = await http.post(
       Uri.parse(baseUrl + '/v1/bus'),
-      headers: <String, String>{
+      headers: {
         'Content-Type': 'application/json',
-        'Accept': "application/json",
-        'Authorization': 'Bearer $token'
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
       },
       body: json.encode(busData),
     );
-    print(busData);
+    
+print('Request Data: ${json.encode(busData)}');
+
+   
+
+    print('Response Code: ${response.statusCode}');
+    print('Response Body: ${response.body}');
+
     if (response.statusCode == 201) {
-      Navigator.pop(
-        context,
-      );
+      Navigator.pop(context);
     } else {
-      print(response.body);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Failed to create bus. Please try again.')),
+        SnackBar(content: Text('Error: ${response.body}')),
       );
     }
+  } catch (e) {
+    print('Error during request: $e');
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Failed to create bus. Please try again.')),
+    );
+  }
+    
   }
 
   Widget buildTextField({
