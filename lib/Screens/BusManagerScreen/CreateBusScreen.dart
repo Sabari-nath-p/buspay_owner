@@ -44,7 +44,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
         districts = json.decode(response.body)['data'];
       });
     } else {
-      throw Exception('Failed to load districts');
+      throw Exception('Failed to load districts'); 
     }
   }
 
@@ -83,38 +83,41 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
   }
 
   Future<void> createBus() async {
-    if (busNameController.text.isEmpty ||
-        rcNumberController.text.isEmpty ||
-        seatingCapacityController.text.isEmpty ||
-        selectedState == null ||
-        selectedDistrict == null ||
-        selectedBusType == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all data')),
-      );
-      return;
-    }
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    String token = pref.getString("accessToken").toString();
-    if (token == null || token.isEmpty) {
+  if (busNameController.text.isEmpty ||
+      rcNumberController.text.isEmpty ||
+      seatingCapacityController.text.isEmpty ||
+      selectedState == null ||
+      selectedDistrict == null ||
+      selectedBusType == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please fill all data')),
+    );
+    return;
+  }
+
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  String? token = pref.getString("accessToken");
+
+  if (token == null || token.isEmpty) {
     print("Token is missing or invalid.");
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('User not authenticated. Please login.')),
     );
     return;
   }
-    final busData = {
-      'name': busNameController.text,
-      'bus_no': rcNumberController.text,
-      'no_of_seats': int.parse(seatingCapacityController.text),
-      // 'state': selectedState,
-      'district_id': selectedDistrict,
-      'bus_type_id': selectedBusType,
-      'prefernce_ids': selectedPreferences.map((value) => value["id"]).toList(),
-    };
-     print("Authorization Token: Bearer $token");
-    print("Requesting with data: $busData");
-       try {
+
+  final busData = {
+    'name': busNameController.text,
+    'bus_no': rcNumberController.text,
+    'no_of_seats': int.parse(seatingCapacityController.text),
+    'district_id': selectedDistrict,
+    'bus_type_id': selectedBusType,
+    'prefernce_ids': selectedPreferences.map((value) => value["id"]).toList(),
+  };
+
+  
+
+  try {
     final response = await http.post(
       Uri.parse(baseUrl + '/v1/bus'),
       headers: {
@@ -124,11 +127,8 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
       },
       body: json.encode(busData),
     );
-    
-print('Request Data: ${json.encode(busData)}');
-
-   
-
+print("Authorization Token: Bearer $token");
+  print("Requesting with data: $busData");
     print('Response Code: ${response.statusCode}');
     print('Response Body: ${response.body}');
 
@@ -145,8 +145,9 @@ print('Request Data: ${json.encode(busData)}');
       const SnackBar(content: Text('Failed to create bus. Please try again.')),
     );
   }
-    
-  }
+}
+
+  
 
   Widget buildTextField({
     required String labelText,

@@ -23,7 +23,7 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
     super.initState();
     fetchBusData();
     searchController.addListener(() {
-      setState(() {}); // Rebuilds the widget when the text changes
+      setState(() {}); 
     });
   }
 
