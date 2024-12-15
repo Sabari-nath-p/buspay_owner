@@ -27,7 +27,8 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
   List preferences = [];
   final TextEditingController busNameController = TextEditingController();
   final TextEditingController rcNumberController = TextEditingController();
-  final TextEditingController seatingCapacityController =TextEditingController();
+  final TextEditingController seatingCapacityController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -49,8 +50,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
   }
 
   Future<void> fetchBusTypes() async {
-    final response =
-        await http.get(Uri.parse(baseUrl +'/v1/bus-type'));
+    final response = await http.get(Uri.parse(baseUrl + '/v1/bus-type'));
     if (response.statusCode == 200) {
       setState(() {
         busTypes = json.decode(response.body)['data'];
@@ -83,71 +83,68 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
   }
 
   Future<void> createBus() async {
-  if (busNameController.text.isEmpty ||
-      rcNumberController.text.isEmpty ||
-      seatingCapacityController.text.isEmpty ||
-      selectedState == null ||
-      selectedDistrict == null ||
-      selectedBusType == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please fill all data')),
-    );
-    return;
-  }
-
-  SharedPreferences pref = await SharedPreferences.getInstance();
-  String? token = pref.getString("accessToken");
-
-  if (token == null || token.isEmpty) {
-    print("Token is missing or invalid.");
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('User not authenticated. Please login.')),
-    );
-    return;
-  }
-
-  final busData = {
-    'name': busNameController.text,
-    'bus_no': rcNumberController.text,
-    'no_of_seats': int.parse(seatingCapacityController.text),
-    'district_id': selectedDistrict,
-    'bus_type_id': selectedBusType,
-    'prefernce_ids': selectedPreferences.map((value) => value["id"]).toList(),
-  };
-
-  
-
-  try {
-    final response = await http.post(
-      Uri.parse(baseUrl + '/v1/bus'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-      body: json.encode(busData),
-    );
-print("Authorization Token: Bearer $token");
-  print("Requesting with data: $busData");
-    print('Response Code: ${response.statusCode}');
-    print('Response Body: ${response.body}');
-
-    if (response.statusCode == 201) {
-      Navigator.pop(context);
-    } else {
+    if (busNameController.text.isEmpty ||
+        rcNumberController.text.isEmpty ||
+        seatingCapacityController.text.isEmpty ||
+        selectedState == null ||
+        selectedDistrict == null ||
+        selectedBusType == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${response.body}')),
+        const SnackBar(content: Text('Please fill all data')),
+      );
+      return;
+    }
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString("accessToken").toString();
+    if (token == null || token.isEmpty) {
+      print("Token is missing or invalid.");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('User not authenticated. Please login.')),
+      );
+      return;
+    }
+    final busData = {
+      'name': busNameController.text,
+      'bus_no': rcNumberController.text,
+      'no_of_seats': int.parse(seatingCapacityController.text),
+      // 'state': selectedState,
+      'district_id': selectedDistrict,
+      'bus_type_id': selectedBusType,
+      'prefernce_ids': selectedPreferences.map((value) => value["id"]).toList(),
+    };
+    print("Authorization Token: Bearer $token");
+    print("Requesting with data: $busData");
+    try {
+      final response = await http.post(
+        Uri.parse(baseUrl + '/v1/bus'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode(busData),
+      );
+
+      print('Request Data: ${json.encode(busData)}');
+
+      print('Response Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      if (response.statusCode == 201) {
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: ${response.body}')),
+        );
+      }
+    } catch (e) {
+      print('Error during request: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Failed to create bus. Please try again.')),
       );
     }
-  } catch (e) {
-    print('Error during request: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Failed to create bus. Please try again.')),
-    );
   }
-}
-
-  
 
   Widget buildTextField({
     required String labelText,
@@ -354,14 +351,18 @@ print("Authorization Token: Bearer $token");
                 ),
               ),
               SizedBox(height: 8.h),
-              Row(
-                children: preferences.map((pref) {
-                  bool isSelected = selectedPreferences.contains(pref);
-                  return Expanded(
-                    child: GestureDetector(
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: preferences.map((pref) {
+                    bool isSelected = selectedPreferences.contains(pref);
+                    return GestureDetector(
                       onTap: () => toggleBusPreference(pref),
                       child: Container(
                         height: 40.h,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 4.h),
+                        margin: EdgeInsets.symmetric(horizontal: 5.w),
                         decoration: BoxDecoration(
                           color: isSelected
                               ? const Color.fromRGBO(15, 103, 177, 1)
@@ -385,9 +386,9 @@ print("Authorization Token: Bearer $token");
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
+                    );
+                  }).toList(),
+                ),
               ),
               SizedBox(height: 20.h),
               Align(

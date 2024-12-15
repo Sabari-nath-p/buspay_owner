@@ -31,7 +31,6 @@ dependencies:
   flutter:
     sdk: flutter
   
-  sizer: ^2.0.15
   http: ^1.2.2
   get: ^4.6.6
   flutter_screenutil: ^5.3.1 
