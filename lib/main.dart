@@ -14,6 +14,9 @@ void main() async {
   await WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   login = preferences.getString("LOGIN") ?? "";
+
+
+  
   runApp(buspay_owner());
 }
 

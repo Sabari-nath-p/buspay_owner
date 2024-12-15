@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:buspay_owner/Screens/AuthenticationScreen/AuthenticationScreen.dart';
 import 'package:buspay_owner/Screens/BusManagerScreen/BusViewScreen.dart';
 import 'package:buspay_owner/Screens/BusManagerScreen/CreateBusScreen.dart';
 //import 'package:buspay_owner/Screens/BusManagerScreen/BusViewScreen.dart';
 import 'package:buspay_owner/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 
 class BusManagerScreen extends StatefulWidget {
@@ -23,7 +25,7 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
     super.initState();
     fetchBusData();
     searchController.addListener(() {
-      setState(() {}); 
+      setState(() {});
     });
   }
 
@@ -53,6 +55,9 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
       });
     }
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -114,25 +119,33 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
                       SizedBox(height: 12),
                       Expanded(
                         child: ListView.builder(
-                          itemCount: query.isEmpty ? busData.length : filteredBusData.length,
+                          itemCount: query.isEmpty
+                              ? busData.length
+                              : filteredBusData.length,
                           itemBuilder: (context, index) {
-                            final bus = query.isEmpty ? busData[index] : filteredBusData[index];
-                            final busStatus = bus['status'] ?? 'Active'; // Default to 'Inactive' if status is missing
+                            final bus = query.isEmpty
+                                ? busData[index]
+                                : filteredBusData[index];
+                            final busStatus = bus['status'] ??
+                                'Active'; // Default to 'Inactive' if status is missing
                             return Column(
                               children: [
                                 BusCard(
-                                  status: busStatus, 
+                                  status: busStatus,
                                   name: bus['name'],
                                   source: 'Haripad',
                                   destination: 'Alappuzha',
                                   conductors: '108',
                                 ),
-                                SizedBox(height: 10),
+                                SizedBox(height: 10.h),
                               ],
                             );
                           },
                         ),
                       ),
+                      SizedBox(
+                        height: 60.h,
+                      )
                     ],
                   ),
                 ),
@@ -237,7 +250,7 @@ class BusCard extends StatelessWidget {
       'Inactive': Colors.red,
     };
 
-    final Color statusColor = statusColors[status] ?? Colors.black; 
+    final Color statusColor = statusColors[status] ?? Colors.black;
 
     return Container(
       height: 68,
@@ -266,7 +279,8 @@ class BusCard extends StatelessWidget {
             SizedBox(width: 8),
             GestureDetector(
               onTap: () {
-                _navigateToScreen(context, status, name, source, destination, conductors);
+                _navigateToScreen(
+                    context, status, name, source, destination, conductors);
               },
               child: Text(
                 status,
@@ -346,19 +360,16 @@ class BusCard extends StatelessWidget {
     String conductors,
   ) {
     if (status == 'Active') {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => BusViewScreen(status: status),
-    ),
-  );
-} else {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text('This bus is not active.')),
-  );
-}
-
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BusViewScreen(status: status),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('This bus is not active.')),
+      );
+    }
   }
 }
-
-
