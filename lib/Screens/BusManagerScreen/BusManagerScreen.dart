@@ -27,6 +27,17 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
     searchController.addListener(() {
       setState(() {});
     });
+
+    startListerner();
+  }
+
+
+  startListerner(){
+
+
+    fetchNotifer.addListener((){
+      fetchBusData();
+    });
   }
 
   @override
@@ -36,7 +47,7 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
   }
 
   Future<void> fetchBusData() async {
-    final String apiUrl = '$baseUrl/v1/bus'; // Replace with actual API URL
+    final String apiUrl = '$baseUrl/v1/bus'; 
     try {
       final response = await http.get(Uri.parse(apiUrl));
 
@@ -55,6 +66,10 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
       });
     }
   }
+  
+
+  ValueNotifier<int> fetchNotifer = ValueNotifier<int>(0);
+
 
 
 
@@ -136,6 +151,7 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
                                   source: 'Haripad',
                                   destination: 'Alappuzha',
                                   conductors: '108',
+                                  busData:busData[index] ,
                                 ),
                                 SizedBox(height: 10.h),
                               ],
@@ -160,7 +176,9 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CreateBusScreen(),
+                            builder: (context) => CreateBusScreen(
+                              fetchNotifier: fetchNotifer,
+                            ),
                           ),
                         );
                       },
@@ -233,6 +251,7 @@ class BusCard extends StatelessWidget {
   final String source;
   final String destination;
   final String conductors;
+  var busData;
 
   BusCard({
     required this.status,
@@ -240,6 +259,7 @@ class BusCard extends StatelessWidget {
     required this.source,
     required this.destination,
     required this.conductors,
+    required this.busData
   });
 
   @override
@@ -279,8 +299,18 @@ class BusCard extends StatelessWidget {
             SizedBox(width: 8),
             GestureDetector(
               onTap: () {
-                _navigateToScreen(
-                    context, status, name, source, destination, conductors);
+               if (status == 'Active') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BusViewScreen(status: status, busData:busData ,),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('This bus is not active.')),
+      );
+    }
               },
               child: Text(
                 status,
@@ -351,25 +381,5 @@ class BusCard extends StatelessWidget {
     );
   }
 
-  void _navigateToScreen(
-    BuildContext context,
-    String status,
-    String name,
-    String source,
-    String destination,
-    String conductors,
-  ) {
-    if (status == 'Active') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => BusViewScreen(status: status),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('This bus is not active.')),
-      );
-    }
-  }
+  
 }

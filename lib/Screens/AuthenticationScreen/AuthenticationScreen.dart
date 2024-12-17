@@ -232,28 +232,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         SizedBox(height: 16.h),
                         Row(
                           children: [
-                            Row(
-                              children: [
-                                Checkbox(
-                                  value: _rememberMe,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      _rememberMe = value!;
-                                    });
-                                  },
-                                  activeColor: Color(0xFF0F67B1),
-                                  checkColor: Colors.white,
-                                ),
-                                Text(
-                                  'Remember me',
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
+                           
                             Spacer(),
                             Text(
                               'Forgot Password?',

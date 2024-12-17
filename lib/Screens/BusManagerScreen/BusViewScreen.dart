@@ -1,5 +1,6 @@
  
 import 'dart:convert';
+import 'package:buspay_owner/Screens/BusManagerScreen/BottomSheetScreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:buspay_owner/Screens/BusManagerScreen/BusManagerScreen.dart';
 import 'package:buspay_owner/main.dart';
@@ -8,7 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BusViewScreen extends StatefulWidget {
-  const BusViewScreen({Key? key, required String status}) : super(key: key);
+  var busData;
+   BusViewScreen({Key? key, required String status, required this.busData}) : super(key: key);
 
   @override
   _BusViewScreenState createState() => _BusViewScreenState();
@@ -18,11 +20,12 @@ class _BusViewScreenState extends State<BusViewScreen> {
   String? selectedState;
   String? selectedDistrict;
    int? selectedBusType;
- Set<String> selectedDays = {};
+ //List<String> selectedDays = [];
   bool airBusSelected = false;
   bool acBusSelected = false;
   bool pushBackSeatSelected = false;
-
+ 
+   
   final List<String> states = ['Kerala'];
    List districts = [];
    List selectedPreferences = [];
@@ -39,6 +42,11 @@ class _BusViewScreenState extends State<BusViewScreen> {
     fetchDistricts();
     fetchBusTypes();
     fetchBusPreferences();
+    busNameController.text = widget.busData["name"] ?? "";
+    rcNumberController.text = widget.busData["bus_no"] ?? "";
+    seatingCapacityController.text = (widget.busData["no_of_seats"]??"").toString();
+    
+
   }
 
   Future<void> fetchDistricts() async {
@@ -87,312 +95,20 @@ class _BusViewScreenState extends State<BusViewScreen> {
   }
   
 
-
-  void _showBottomSheet(BuildContext context) {
+void _showBottomSheet(BuildContext context) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-        top: Radius.circular(50),
-        bottom: Radius.circular(20),
-      ),
-    ),
-    builder: (context) => Padding(
-      padding: EdgeInsets.only(left: 36, top: 28, right: 36),
-      child: Container(
-        height: 562,
-        width: 391,
-        child: Column(
-          children: [
-            Text(
-              'Add Bus Route',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            SizedBox(height: 5),
-            Container(
-                width: 97.w,
-                height: 1.h,
-                margin: EdgeInsets.only(bottom: 23.h),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black.withOpacity(0.1)),
-                ),
-              ),
-            // Starting Time
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Starting Time',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: "Inter",
-                ),
-              ),
-            ),
-            SizedBox(height: 8),
-            Container(
-              width: 327,
-              height: 48,
-              child: TextField(
-                controller: TextEditingController(text: '12:00:00 PM'),
-                enabled: true,
-                decoration: InputDecoration(
-                  hintText: '12:00:00 PM',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey.shade200,
-                  disabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.grey.shade200),
-                  ),
-                ),
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-            SizedBox(height: 16),
-            // Trip Day
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Trip Day',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            SizedBox(height: 8),
-            // Days of the Week Selection
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu'].map((day) {
-                bool isSelected = selectedDays.contains(day);
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isSelected
-                          ? selectedDays.remove(day)
-                          : selectedDays.add(day);
-                    });
-                  },
-                  child: Container(
-                    height: 33,
-                    width: 56,
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? Color.fromRGBO(15, 103, 177, 1)
-                          : Color.fromRGBO(221, 220, 220, 1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        day,
-                        style: TextStyle(
-                          color: isSelected ? Colors.white : Colors.black,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 5),
-            Row(
-              children: [
-                SizedBox(width: 5),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedDays.contains('Fri')
-                          ? selectedDays.remove('Fri')
-                          : selectedDays.add('Fri');
-                    });
-                  },
-                  child: Container(
-                    height: 33,
-                    width: 56,
-                    decoration: BoxDecoration(
-                      color: selectedDays.contains('Fri')
-                          ? Color.fromRGBO(15, 103, 177, 1)
-                          : Color.fromRGBO(221, 220, 220, 1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Fri',
-                        style: TextStyle(
-                          color: selectedDays.contains('Fri')
-                              ? Colors.white
-                              : Colors.black,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 5),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedDays.contains('Sat')
-                          ? selectedDays.remove('Sat')
-                          : selectedDays.add('Sat');
-                    });
-                  },
-                  child: Container(
-                    height: 33,
-                    width: 56,
-                    decoration: BoxDecoration(
-                      color: selectedDays.contains('Sat')
-                          ? Color.fromRGBO(15, 103, 177, 1)
-                          : Color.fromRGBO(221, 220, 220, 1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Sat',
-                        style: TextStyle(
-                          color: selectedDays.contains('Sat')
-                              ? Colors.white
-                              : Colors.black,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16),
-            // Select Route
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Select Route',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            SizedBox(height:2),
-            Container(
-              width: 327,
-              height: 48,
-              child: TextField(
-                controller: TextEditingController(text: 'Search Route'),
-                enabled: true,
-                decoration: InputDecoration(
-                  hintText: 'Search Route',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey.shade200,
-                  disabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.grey.shade200),
-                  ),
-                ),
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-           // SizedBox(height: 2),
-            // ListView for routes
-            Expanded(
-              child: ListView(
-                shrinkWrap: true,
-               // physics: NeverScrollableScrollPhysics(),
-                children: [
-                  ListTile(
-                    title: Text(
-                      'Haripad → Alappuzha',
-                      style: TextStyle(
-                        fontFamily: "Lato",
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(96, 96, 96, 1),
-                      ),
-                    ),
-                    leading: Radio(value: 1, groupValue: 1, onChanged: (value) {}),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Haripad → Alappuzha',
-                      style: TextStyle(
-                        fontFamily: "Lato",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(96, 96, 96, 1),
-                      ),
-                    ),
-                    leading: Radio(value: 2, groupValue: 1, onChanged: (value) {}),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Haripad → Alappuzha',
-                      style: TextStyle(
-                        fontFamily: "Lato",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(96, 96, 96, 1),
-                      ),
-                    ),
-                    leading: Radio(value: 3, groupValue: 1, onChanged: (value) {}),
-                  ),
-                ],
-              ),
-            ),
-            // Create Bus Button
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                width: 323.74,
-                height: 40,
-                margin: EdgeInsets.only(bottom: 5),
-                child: ElevatedButton(
-                  onPressed: () {
-                      Navigator.pop(context);
-                  },
-                  child: Text(
-                    'Add Route',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: "Poppins",
-                      color: Color.fromRGBO(255, 255, 255, 1),
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(15, 103, 177, 1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
+    builder: (BuildContext context) {
+      return AddBusRouteBottomSheet();  
+    },
   );
 }
+
   
 
 
-
-
-
+//tetxtfeild
  
 Widget buildTextField({
     required String labelText,
@@ -505,13 +221,6 @@ Widget buildTextField({
       ],
     );
   }
-
-
-
-
-
-
-
 
 
 
@@ -643,7 +352,7 @@ Widget buildTextField({
            
 
 
-Container(
+         Container(
           width: 350,
          // height:142,
           padding: EdgeInsets.only(left:16,top:10,right:16),

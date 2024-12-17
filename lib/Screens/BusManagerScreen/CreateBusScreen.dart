@@ -10,7 +10,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateBusScreen extends StatefulWidget {
-  const CreateBusScreen({Key? key}) : super(key: key);
+  ValueNotifier fetchNotifier;
+   CreateBusScreen({Key? key, required this.fetchNotifier}) : super(key: key);
 
   @override
   _CreateBusScreenState createState() => _CreateBusScreenState();
@@ -130,7 +131,10 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
       print('Response Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
 
+
       if (response.statusCode == 201) {
+
+        widget.fetchNotifier.value+=1;
         Navigator.pop(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
