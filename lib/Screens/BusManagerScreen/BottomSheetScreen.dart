@@ -11,7 +11,7 @@ class AddBusRouteBottomSheet extends StatefulWidget {
 }
 class _AddBusRouteBottomSheetState extends State<AddBusRouteBottomSheet> {
   List<String> selectedDays = [];
-
+var busData;
 
  TextEditingController startTimeController = TextEditingController();
   TextEditingController finishTimeController = TextEditingController();
@@ -26,7 +26,7 @@ class _AddBusRouteBottomSheetState extends State<AddBusRouteBottomSheet> {
 
   // Data to send
   Map<String, dynamic> requestData = {
-   // "bus_id": 2,
+   "bus_id": busData["id"],
     "route_id": 1,
     "start_timing": startTimeController.text,
     "days_of_week": selectedDays,

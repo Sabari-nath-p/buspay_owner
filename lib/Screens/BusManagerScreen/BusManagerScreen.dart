@@ -76,9 +76,9 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String query = searchController.text.toLowerCase(); // Current search query
+    String query = searchController.text.toLowerCase(); 
     List<dynamic> filteredBusData = busData.where((bus) {
-      return bus['name'].toLowerCase().contains(query); // Filter logic
+      return bus['name'].toLowerCase().contains(query); 
     }).toList();
 
     return Scaffold(
@@ -104,14 +104,8 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
                   padding: const EdgeInsets.only(top: 16, left: 9, right: 9),
                   child: Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildStatCard('05', 'Running'),
-                          _buildStatCard('05', 'Suspended'),
-                          _buildStatCard('20%', 'Market'),
-                        ],
-                      ),
+                     
+                      
                       SizedBox(height: 20),
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 10),
@@ -142,7 +136,7 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
                                 ? busData[index]
                                 : filteredBusData[index];
                             final busStatus = bus['status'] ??
-                                'Active'; // Default to 'Inactive' if status is missing
+                                'Active'; 
                             return Column(
                               children: [
                                 BusCard(
@@ -205,44 +199,7 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
     );
   }
 
-  Widget _buildStatCard(String number, String label) {
-    return Container(
-      height: 64,
-      width: 100,
-      padding: EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(9),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 4,
-            offset: Offset(2, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Text(
-            number,
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-              color: Color.fromRGBO(0, 0, 0, 1),
-            ),
-          ),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 13,
-              color: Color.fromRGBO(0, 0, 0, 1),
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+ 
 }
 
 class BusCard extends StatelessWidget {

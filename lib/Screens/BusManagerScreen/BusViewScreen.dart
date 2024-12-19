@@ -1,9 +1,10 @@
  
 import 'dart:convert';
 import 'package:buspay_owner/Screens/BusManagerScreen/BottomSheetScreen.dart';
+import 'package:buspay_owner/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:buspay_owner/Screens/BusManagerScreen/BusManagerScreen.dart';
-import 'package:buspay_owner/main.dart';
+//import 'package:buspay_owner/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,7 +19,7 @@ class BusViewScreen extends StatefulWidget {
 
 class _BusViewScreenState extends State<BusViewScreen> {
   String? selectedState;
-  String? selectedDistrict;
+  int? selectedDistrict;
    int? selectedBusType;
  //List<String> selectedDays = [];
   bool airBusSelected = false;
@@ -34,18 +35,20 @@ class _BusViewScreenState extends State<BusViewScreen> {
   final TextEditingController busNameController = TextEditingController();
   final TextEditingController rcNumberController = TextEditingController();
   final TextEditingController seatingCapacityController =TextEditingController();
+  
 
 
 @override
   void initState() {
     super.initState();
-    fetchDistricts();
-    fetchBusTypes();
-    fetchBusPreferences();
+   
+   
     busNameController.text = widget.busData["name"] ?? "";
     rcNumberController.text = widget.busData["bus_no"] ?? "";
     seatingCapacityController.text = (widget.busData["no_of_seats"]??"").toString();
-    
+    selectedDistrict = widget.busData["district_id"];
+    selectedBusType = widget.busData["bus_type_id"];
+    //selectedPreferences = widget.busData[""];
 
   }
 
@@ -56,13 +59,12 @@ class _BusViewScreenState extends State<BusViewScreen> {
         districts = json.decode(response.body)['data'];
       });
     } else {
-      throw Exception('Failed to load districts');
+      throw Exception('Failed to load districts'); 
     }
   }
 
   Future<void> fetchBusTypes() async {
-    final response =
-        await http.get(Uri.parse(baseUrl +'/v1/bus-type'));
+    final response = await http.get(Uri.parse(baseUrl + '/v1/bus-type'));
     if (response.statusCode == 200) {
       setState(() {
         busTypes = json.decode(response.body)['data'];
@@ -74,7 +76,7 @@ class _BusViewScreenState extends State<BusViewScreen> {
 
   Future<void> fetchBusPreferences() async {
     final response =
-        await http.get(Uri.parse(baseUrl+'v1/preference'));
+        await http.get(Uri.parse(baseUrl +'/v1/preference'));
     if (response.statusCode == 200) {
       setState(() {
         preferences = json.decode(response.body)['data'];
@@ -262,17 +264,14 @@ Widget buildTextField({
                 hintText: 'Enter bus RC number',
                 controller: rcNumberController,
               ),
-              buildDropdown(
-                labelText: 'State*',
-                hintText: 'Select route state',
-                value: selectedState,
-                items: states,
-                onChanged: (newValue) {
-                  setState(() {
-                    selectedState = newValue;
-                  });
-                },
-              ),
+             // labelText: 'State*',
+
+              //     setState(() {
+              //       print(selectedState);
+              //       selectedState = newValue;
+              //     });
+              //   },
+              // ),
               buildDropdown(
                 labelText: 'District*',
                 hintText: 'Select route district',
@@ -282,18 +281,21 @@ Widget buildTextField({
                 keyId: 'id',
                 onChanged: (newValue) {
                   setState(() {
-                    selectedDistrict = newValue;
+                 
+                selectedDistrict = newValue;
                   });
+              
                 },
               ),
               buildTextField(
                 labelText: 'Seating Capacity',
                 hintText: 'Enter seating capacity',
+                controller: seatingCapacityController
               ),
               buildDropdown(
                 labelText: 'Bus  Type',
                 hintText: 'Select route ',
-                value: selectedDistrict,
+                value: selectedBusType,
                 items: busTypes,
                 fieldName: 'type',
                 keyId: 'id',
@@ -313,14 +315,18 @@ Widget buildTextField({
                 ),
               ),
               SizedBox(height: 8.h),
-             Row(
-                children: preferences.map((pref) {
-                  bool isSelected = selectedPreferences.contains(pref);
-                  return Expanded(
-                    child: GestureDetector(
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: preferences.map((pref) {
+                    bool isSelected = selectedPreferences.contains(pref);
+                    return GestureDetector(
                       onTap: () => toggleBusPreference(pref),
                       child: Container(
                         height: 40.h,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 4.h),
+                        margin: EdgeInsets.symmetric(horizontal: 5.w),
                         decoration: BoxDecoration(
                           color: isSelected
                               ? const Color.fromRGBO(15, 103, 177, 1)
@@ -344,10 +350,11 @@ Widget buildTextField({
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
+                    );
+                  }).toList(),
+                ),
               ),
+              
               SizedBox(height: 20.h),
            
 

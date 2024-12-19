@@ -1,12 +1,12 @@
 import 'dart:convert';
-//import 'package:buspay_owner/Screens/BusManagerScreen/CreateBusController.dart';
+
 import 'package:buspay_owner/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-//import 'package:get/get_state_manager/get_state_manager.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-//import 'package:buspay_owner/Screens/BusManagerScreen/BusManagerScreen.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateBusScreen extends StatefulWidget {
@@ -28,8 +28,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
   List preferences = [];
   final TextEditingController busNameController = TextEditingController();
   final TextEditingController rcNumberController = TextEditingController();
-  final TextEditingController seatingCapacityController =
-      TextEditingController();
+  final TextEditingController seatingCapacityController =TextEditingController();
 
   @override
   void initState() {
@@ -63,7 +62,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
 
   Future<void> fetchBusPreferences() async {
     final response =
-        await http.get(Uri.parse('http://api.buspay.co/v1/preference'));
+        await http.get(Uri.parse(baseUrl +'/v1/preference'));
     if (response.statusCode == 200) {
       setState(() {
         preferences = json.decode(response.body)['data'];
