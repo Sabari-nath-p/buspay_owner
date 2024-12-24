@@ -6,7 +6,7 @@ import 'package:buspay_owner/Screens/OwnerProfileScreen/OwnerProfileScreen.dart'
 import 'package:dots_indicator/dots_indicator.dart';
 
 import 'package:flutter/material.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -15,10 +15,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(252,252,252,1),
+      backgroundColor: Color.fromRGBO(252, 252, 252, 1),
       body: SafeArea(
         child: Padding(
-          padding:  EdgeInsets.only(left:20,right:20,top:30),
+          padding: EdgeInsets.only(left: 20, right: 20, top: 30),
           child: Column(
             children: [
               Row(
@@ -36,8 +36,8 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           Text(
                             'Hi,',
-                            style: TextStyle(
-                              fontFamily: "Poppins",
+                            style: GoogleFonts.poppins(
+                              // fontFamily: "Poppins",
                               fontSize: 17,
                               fontWeight: FontWeight.w400,
                               color: Colors.black,
@@ -46,8 +46,8 @@ class HomeScreen extends StatelessWidget {
                           SizedBox(width: 3),
                           Text(
                             'Naveed 👋🏼',
-                            style: TextStyle(
-                              fontFamily: "Poppins",
+                            style: GoogleFonts.poppins(
+                              //  fontFamily: "Poppins",
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                             ),
@@ -56,7 +56,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       Text(
                         'Welcome Back !',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           fontSize: 17,
                           color: Colors.black,
                           fontWeight: FontWeight.w400,
@@ -72,7 +72,6 @@ class HomeScreen extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   Positioned(
-                  
                     child: Container(
                       height: 144,
                       width: 344,
@@ -86,7 +85,7 @@ class HomeScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(4.0),
                           child: Text(
                             'Track My Bus',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               color: Color.fromRGBO(255, 255, 255, 1),
                               fontWeight: FontWeight.w700,
                               fontSize: 12,
@@ -105,15 +104,14 @@ class HomeScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Padding(
-                        padding:
-                             EdgeInsets.only(left: 15, top: 10, right:15),
+                        padding: EdgeInsets.only(left: 15, top: 10, right: 15),
                         child: Column(
                           children: [
                             Row(
                               children: [
                                 Text(
                                   "A-One Travellers",
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.black,
@@ -130,9 +128,9 @@ class HomeScreen extends StatelessWidget {
                                   child: Center(
                                     child: Text(
                                       'On the Way',
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                         fontSize: 10,
-                                        fontFamily: "Poppins",
+                                        // fontFamily: "Poppins",
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black,
                                       ),
@@ -145,7 +143,7 @@ class HomeScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   "Haripad",
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     fontSize: 10,
                                     color: Color.fromRGBO(96, 96, 96, 1),
                                     fontWeight: FontWeight.w400,
@@ -157,7 +155,7 @@ class HomeScreen extends StatelessWidget {
                                 SizedBox(width: 6),
                                 Text(
                                   "Alappuzha",
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     fontSize: 12,
                                     color: Colors.black54,
                                     fontWeight: FontWeight.w600,
@@ -181,20 +179,20 @@ class HomeScreen extends StatelessWidget {
                                   children: [
                                     Text(
                                       "Karuvatta TB Junction",
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                         fontSize: 11,
-                                        fontFamily: 'Poppins',
+                                        //  fontFamily: 'Poppins',
                                         color: Colors.black,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     Text(
                                       "12:25 PM, 8 KM",
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                         fontSize: 10,
                                         color: Color.fromRGBO(0, 0, 0, 1),
                                         fontWeight: FontWeight.w500,
-                                        fontFamily: "Poppins",
+                                        //   fontFamily: "Poppins",
                                       ),
                                     ),
                                   ],
@@ -204,19 +202,19 @@ class HomeScreen extends StatelessWidget {
                                   children: [
                                     Text(
                                       "Thottappally North",
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                         fontSize: 11,
-                                        fontFamily: 'Poppins',
+                                        // fontFamily: 'Poppins',
                                         color: Colors.black,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     Text(
                                       "12:45 PM, 12 KM",
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                         fontSize: 10,
                                         color: Color.fromRGBO(0, 0, 0, 1),
-                                        fontFamily: "Poppins",
+                                        //  fontFamily: "Poppins",
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -231,14 +229,14 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-                SizedBox(height: 15),
-                   DotsIndicator(
+              SizedBox(height: 15),
+              DotsIndicator(
                 dotsCount: pageLength,
-              
-              //  position: currentIndexPage.toDouble(),
+
+                //  position: currentIndexPage.toDouble(),
                 decorator: DotsDecorator(
-                  size:  Size.square(8.0),
-                  activeSize: Size(12.0,6.0),
+                  size: Size.square(8.0),
+                  activeSize: Size(12.0, 6.0),
                   activeShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -251,17 +249,15 @@ class HomeScreen extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Manage",
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 21,
                     fontWeight: FontWeight.w600,
                     color: Colors.black87,
                   ),
                 ),
               ),
-            
-                    
-              
-         SizedBox(height: 20),
+
+              SizedBox(height: 20),
 
               // Grid Menu
               GridView.count(
@@ -271,13 +267,14 @@ class HomeScreen extends StatelessWidget {
                 mainAxisSpacing: 13,
                 childAspectRatio: 162.95 / 116,
                 children: [
-                  _buildGridItem(
-                      "Bus Manager", "assets/bus_manager.png", BusManagerScreen(), context),
-                  _buildGridItem(
-                      "Conductors", "assets/conductors.png", ConductorViewScreen(), context),
-                  _buildGridItem(
-                      "Collections", "assets/collections.png", CollectionScreen(), context),
-                  _buildGridItem("Owner Profile", "assets/owner_profile.png",OwnerProfileScreen(), context),
+                  _buildGridItem("Bus Manager", "assets/bus_manager.png",
+                      BusManagerScreen(), context),
+                  _buildGridItem("Conductors", "assets/conductors.png",
+                      ConductorViewScreen(), context),
+                  _buildGridItem("Collections", "assets/collections.png",
+                      CollectionScreen(), context),
+                  _buildGridItem("Owner Profile", "assets/owner_profile.png",
+                      OwnerProfileScreen(), context),
                 ],
               ),
               SizedBox(height: 40),
@@ -300,9 +297,9 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 2),
               Text(
                 "Verify Ticket",
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 12,
-                  fontFamily: "Popins",
+                  //  fontFamily: "Popins",
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -313,7 +310,8 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildGridItem(String title, String asset, Widget screen, BuildContext context) {
+  Widget _buildGridItem(
+      String title, String asset, Widget screen, BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -346,7 +344,7 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 5),
             Text(
               title,
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: Colors.black,

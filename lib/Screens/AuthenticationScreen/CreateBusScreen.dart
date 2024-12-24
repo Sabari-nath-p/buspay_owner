@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CreateBusScreen extends StatefulWidget {
-
   const CreateBusScreen({Key? key}) : super(key: key);
 
   @override
@@ -24,33 +24,34 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(15, 103, 177, 1),
-        title: const Text(
+        title: Text(
           'Create Bus',
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             color: Colors.white,
-            fontFamily: "Poppins",
+            //  fontFamily: "Poppins",
             fontWeight: FontWeight.w600,
             fontSize: 21,
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
+          icon: const Icon(Icons.arrow_back_ios_new_outlined,
+              color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left:25,top:16,right: 25),
+        padding: const EdgeInsets.only(left: 25, top: 16, right: 25),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Bus Name Label and TextField (disabled)
-              const Text(
+              Text(
                 'Bus Name*',
-                style: TextStyle(
-                  fontFamily: "Inter",
+                style: GoogleFonts.poppins(
+                  //  fontFamily: "Inter",
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: Color.fromRGBO(9, 10, 10, 1),
@@ -64,7 +65,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                   enabled: true,
                   decoration: InputDecoration(
                     hintText: 'Enter bus name',
-                    hintStyle: const TextStyle(
+                    hintStyle: GoogleFonts.poppins(
                         color: Color.fromRGBO(205, 207, 208, 1), fontSize: 16),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -75,10 +76,10 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
               const SizedBox(height: 16),
 
               // RC Number Label and TextField (disabled)
-              const Text(
+              Text(
                 'RC Number*',
-                style: TextStyle(
-                  fontFamily: "Inter",
+                style: GoogleFonts.poppins(
+                  // fontFamily: "Inter",
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: Color.fromRGBO(9, 10, 10, 1),
@@ -92,7 +93,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                   enabled: true,
                   decoration: InputDecoration(
                     hintText: 'Enter bus RC number',
-                    hintStyle: const TextStyle(
+                    hintStyle: GoogleFonts.poppins(
                         color: Color.fromRGBO(205, 207, 208, 1), fontSize: 16),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -102,10 +103,9 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
               ),
               const SizedBox(height: 16),
 
-              const Text(
+              Text(
                 'State*',
-                style: TextStyle(
-                  fontFamily: "Inter",
+                style: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: Color.fromRGBO(9, 10, 10, 1),
@@ -121,11 +121,11 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                 ),
                 child: DropdownButtonFormField<String>(
                   value: selectedState,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(horizontal: 12),
                     border: InputBorder.none,
                     hintText: 'Select route state',
-                    hintStyle: TextStyle(
+                    hintStyle: GoogleFonts.poppins(
                         color: Color.fromRGBO(205, 207, 208, 1), fontSize: 16),
                   ),
                   items: states.map((String state) {
@@ -143,10 +143,10 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
               ),
               const SizedBox(height: 16),
 
-              const Text(
+              Text(
                 'District*',
-                style: TextStyle(
-                  fontFamily: "Inter",
+                style: GoogleFonts.poppins(
+                  //   fontFamily: "Inter",
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: Color.fromRGBO(9, 10, 10, 1),
@@ -162,12 +162,11 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                 ),
                 child: DropdownButtonFormField<String>(
                   value: selectedDistrict,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(horizontal: 12),
                     border: InputBorder.none,
                     hintText: 'Select route district',
-                
-                    hintStyle: TextStyle(
+                    hintStyle: GoogleFonts.poppins(
                         color: Color.fromRGBO(205, 207, 208, 1), fontSize: 16),
                   ),
                   items: districts.map((String district) {
@@ -187,8 +186,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
 
               Text(
                 'Seating Capacity*',
-                style: TextStyle(
-                  fontFamily: "Inter",
+                style: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: Color.fromRGBO(9, 10, 10, 1),
@@ -202,7 +200,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                   enabled: true,
                   decoration: InputDecoration(
                     hintText: 'Enter bus name',
-                    hintStyle: const TextStyle(
+                    hintStyle: GoogleFonts.poppins(
                         color: Color.fromRGBO(205, 207, 208, 1), fontSize: 16),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -212,147 +210,146 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
               ),
               const SizedBox(height: 16),
 
-              const Text(
+              Text(
                 'Bus Preference',
-                style: TextStyle(
-                  fontFamily: "Inter",
+                style: GoogleFonts.poppins(
+                  //  fontFamily: "Inter",
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: Color.fromRGBO(9, 10, 10, 1),
                 ),
               ),
               const SizedBox(height: 8),
-Row(
-  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    // Air Bus Container
-    Container(
-       height: 33,
-    width: 87,
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(15,103,177,1), 
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Center(
-        child: Text(
-          'Air Bus',
-          style: TextStyle(
-            color: Colors.white, 
-            fontSize: 14,
-          ),
-        ),
-      ),
-    ),
-    SizedBox(width:10),
-    // AC Bus Container
-    Container(
-    height: 33,
-    width: 87,
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(15,103,177,1),
-        borderRadius: BorderRadius.circular(10),
-
-      ),
-      child: Center(
-        child: Text(
-          'AC Bus',
-          style: TextStyle(
-            color: Colors.white, // White text color
-            fontSize: 14,
-          ),
-        ),
-      ),
-    ),
- SizedBox(width:10),
-    // Push Back Seat Container
-    Container(
-    height: 33,
-    width: 142,
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(15,103,177,1),        
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child:  Center(
-        child: Text(
-          'Push Back Seat',
-          style: TextStyle(
-            color: Colors.white, // White text color
-            fontSize: 16,
-          ),
-        ),
-      ),
-    ),
-  ],
-),
-
-      SizedBox(height: 16),
-
-     RichText(
-  text: TextSpan(
-    children: [
-      TextSpan(
-        text: 'By continuing, you agree to our ',
-        style: TextStyle(fontSize: 13, color: Colors.black),
-      ),
-      TextSpan(
-        text: 'Terms of Service ',
-        style: TextStyle(fontSize: 13, color: Colors.blue),
-      ),
-        TextSpan(
-        text: 'and ',
-        style: TextStyle(fontSize: 13, color: Colors.black),
-      ),
-      TextSpan(
-        text: '\nPrivacy Policy ',
-        style: TextStyle(fontSize: 13, color: Colors.blue),
-      ),
-      TextSpan(
-        text: '.',
-        style: TextStyle(fontSize: 13, color: Colors.black),
-      ),
-      
-    ],
-  ),
-),
-
-
-              
-              SizedBox(
-              height:40),
-             Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-              width: 323.74,
-              height: 40,
-              margin: EdgeInsets.only(bottom: 16),
-              child: ElevatedButton(
-                onPressed: () {
-                 // Navigator.push(
-                   // context,
-                    //MaterialPageRoute(
-                      //builder: (context) => CreateBusScreen(),
-                    //),
-                  //);
-                },
-                child: Text(
-                  'Create Bus',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: "Poppins",
-                    color: Color.fromRGBO(255,255,255,1),
+              Row(
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Air Bus Container
+                  Container(
+                    height: 33,
+                    width: 87,
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(15, 103, 177, 1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Air Bus',
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
                   ),
+                  SizedBox(width: 10),
+                  // AC Bus Container
+                  Container(
+                    height: 33,
+                    width: 87,
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(15, 103, 177, 1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'AC Bus',
+                        style: GoogleFonts.poppins(
+                          color: Colors.white, // White text color
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  // Push Back Seat Container
+                  Container(
+                    height: 33,
+                    width: 142,
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(15, 103, 177, 1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Push Back Seat',
+                        style: GoogleFonts.poppins(
+                          color: Colors.white, // White text color
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 16),
+
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'By continuing, you agree to our ',
+                      style: GoogleFonts.poppins(
+                          fontSize: 13, color: Colors.black),
+                    ),
+                    TextSpan(
+                      text: 'Terms of Service ',
+                      style:
+                          GoogleFonts.poppins(fontSize: 13, color: Colors.blue),
+                    ),
+                    TextSpan(
+                      text: 'and ',
+                      style: GoogleFonts.poppins(
+                          fontSize: 13, color: Colors.black),
+                    ),
+                    TextSpan(
+                      text: '\nPrivacy Policy ',
+                      style:
+                          GoogleFonts.poppins(fontSize: 13, color: Colors.blue),
+                    ),
+                    TextSpan(
+                      text: '.',
+                      style: GoogleFonts.poppins(
+                          fontSize: 13, color: Colors.black),
+                    ),
+                  ],
                 ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(15, 103, 177, 1), 
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+              ),
+
+              SizedBox(height: 40),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: 323.74,
+                  height: 40,
+                  margin: EdgeInsets.only(bottom: 16),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Navigator.push(
+                      // context,
+                      //MaterialPageRoute(
+                      //builder: (context) => CreateBusScreen(),
+                      //),
+                      //);
+                    },
+                    child: Text(
+                      'Create Bus',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        //  fontFamily: "Poppins",
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromRGBO(15, 103, 177, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-             ),
-              
             ],
           ),
         ),

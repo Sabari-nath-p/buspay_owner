@@ -9,20 +9,21 @@ class EditConductorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-         backgroundColor: Color.fromRGBO(252,252,252,1),
+      backgroundColor: Color.fromRGBO(252, 252, 252, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(15, 103, 177, 1),
-        title: const Text(
+        title: Text(
           'Conductor',
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             color: Colors.white,
-            fontFamily: "Poppins",
+            //fontFamily: "Poppins",
             fontWeight: FontWeight.w600,
             fontSize: 21,
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
+          icon: const Icon(Icons.arrow_back_ios_new_outlined,
+              color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -43,12 +44,13 @@ class EditConductorScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 25.0),
                 child: GestureDetector(
                   onTap: () {
-                    _showResetPasswordSheet(context);  // This method will trigger the bottom sheet
+                    _showResetPasswordSheet(
+                        context); // This method will trigger the bottom sheet
                   },
                   child: Text(
                     "Reset Password",
-                    style: TextStyle(
-                      fontFamily: "Poppins",
+                    style: GoogleFonts.poppins(
+                      // fontFamily: "Poppins",
                       fontSize: 13,
                       fontWeight: FontWeight.w400,
                       color: Color.fromRGBO(0, 0, 0, 1),
@@ -64,19 +66,19 @@ class EditConductorScreen extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 23, left: 33, right: 33),
               child: ElevatedButton(
                 onPressed: () {
-                 Navigator.push(
-                   context,
+                  Navigator.push(
+                    context,
                     MaterialPageRoute(
                       builder: (context) => ConductorViewScreen(),
                     ),
-                 );
+                  );
                 },
                 child: Text(
                   'Update Conductor',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    fontFamily: "Poppins",
+                    //  fontFamily: "Poppins",
                     color: Color.fromRGBO(255, 255, 255, 1),
                   ),
                 ),
@@ -90,8 +92,8 @@ class EditConductorScreen extends StatelessWidget {
             ),
             Text(
               "Delete Conductor",
-              style: TextStyle(
-                fontFamily: "Poppins",
+              style: GoogleFonts.poppins(
+                //  fontFamily: "Poppins",
                 fontWeight: FontWeight.w400,
                 fontSize: 13,
                 color: Color.fromRGBO(221, 65, 65, 1),
@@ -104,13 +106,12 @@ class EditConductorScreen extends StatelessWidget {
     );
   }
 
-  
   void _showResetPasswordSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
-        Radius.circular(40),
+          Radius.circular(40),
         ),
       ),
       builder: (context) {
@@ -133,17 +134,15 @@ class EditConductorScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
-            
               Text(
                 "Reset Password",
-                style: TextStyle(
-                  fontFamily: "Inter",
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Color.fromRGBO(9,10,10,1)
-                ),
+                style: GoogleFonts.poppins(
+                    // fontFamily: "Inter",
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Color.fromRGBO(9, 10, 10, 1)),
               ),
-                Container(
+              Container(
                 width: 97.w,
                 height: 1.h,
                 margin: EdgeInsets.only(bottom: 23.h),
@@ -151,7 +150,7 @@ class EditConductorScreen extends StatelessWidget {
                   border: Border.all(color: Colors.black.withOpacity(0.1)),
                 ),
               ),
-             // SizedBox(height: 2.h),
+              // SizedBox(height: 2.h),
               _textfield("New Password*", "Enter new password"),
               _textfield("Confirm Password*", "Confirm new password"),
               SizedBox(height: 9.h),
@@ -160,19 +159,19 @@ class EditConductorScreen extends StatelessWidget {
                 height: 40.h,
                 child: ElevatedButton(
                   onPressed: () {
-                     Navigator.push(
-                   context,
-                    MaterialPageRoute(
-                      builder: (context) => ConductorViewScreen(),
-                    ),
-                     );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ConductorViewScreen(),
+                      ),
+                    );
                   },
                   child: Text(
                     'Reset Password',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
-                      fontFamily: "Poppins",
+                      //  fontFamily: "Poppins",
                       color: Colors.white,
                     ),
                   ),
@@ -191,8 +190,8 @@ class EditConductorScreen extends StatelessWidget {
                 },
                 child: Text(
                   "Go Back",
-                  style: TextStyle(
-                    fontFamily: "Poppins",
+                  style: GoogleFonts.poppins(
+                    //fontFamily: "Poppins",
                     fontSize: 13.sp,
                     fontWeight: FontWeight.w400,
                     color: Colors.grey[600],

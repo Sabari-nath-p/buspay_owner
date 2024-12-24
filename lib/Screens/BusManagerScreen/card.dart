@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class card extends StatefulWidget {
   const card({super.key});
@@ -59,7 +60,7 @@ class TravelCard extends StatelessWidget {
                 children: [
                   Text(
                     '$from → $to',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                     ),
@@ -67,7 +68,7 @@ class TravelCard extends StatelessWidget {
                   SizedBox(height: 4),
                   Text(
                     time,
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 12,
                       color: Colors.grey[600],
                     ),
@@ -75,9 +76,7 @@ class TravelCard extends StatelessWidget {
                 ],
               ),
               GestureDetector(
-                onTap: () {
-                 
-                },
+                onTap: () {},
                 child: Image.asset(
                   'assets/trash-02.png',
                   width: 24,

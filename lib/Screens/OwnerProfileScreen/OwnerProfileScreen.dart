@@ -18,14 +18,15 @@ class OwnerProfileScreen extends StatelessWidget {
           // bank detial,change text
           Text(
             title,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+            style:
+                GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w500),
           ),
           if (actionText != null)
             GestureDetector(
               onTap: onActionTap,
               child: Text(
                 actionText,
-                style: const TextStyle(color: Colors.black),
+                style: GoogleFonts.poppins(color: Colors.black),
               ),
             ),
         ],
@@ -45,19 +46,21 @@ class OwnerProfileScreen extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: const TextStyle(
-                    color: Color.fromRGBO(0, 0, 0, 0.69),
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: "Lato"),
+                style: GoogleFonts.poppins(
+                  color: Color.fromRGBO(0, 0, 0, 0.69),
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                  //  fontFamily: "Lato"
+                ),
               ),
               Text(
                 value,
-                style: const TextStyle(
-                    color: Color.fromRGBO(0, 0, 0, 0.69),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: "Lato"),
+                style: GoogleFonts.poppins(
+                  color: Color.fromRGBO(0, 0, 0, 0.69),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  //  fontFamily: "Lato"
+                ),
               ),
             ],
           ),
@@ -74,7 +77,7 @@ class OwnerProfileScreen extends StatelessWidget {
         backgroundColor: Color(0xFF0F67B1),
         title: Text(
           'Owner Profile',
-          style: TextStyle(color: Colors.white),
+          style: GoogleFonts.poppins(color: Colors.white),
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
@@ -102,33 +105,33 @@ class OwnerProfileScreen extends StatelessWidget {
                     CircleAvatar(
                       radius: 28,
                       backgroundColor: Color.fromRGBO(217, 217, 217, 0.44),
-                      child: const Text(
+                      child: Text(
                         'SP',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                             fontSize: 29,
                             fontWeight: FontWeight.w600,
-                            fontFamily: "Poppins",
+                            // fontFamily: "Poppins",
                             color: Color.fromRGBO(151, 151, 151, 1)),
                       ),
                     ),
                     const SizedBox(width: 16),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           'Sabarinath P',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                               fontSize: 19,
                               fontWeight: FontWeight.w500,
-                              fontFamily: "Poppins",
+                              // fontFamily: "Poppins",
                               color: Colors.black),
                         ),
                         //SizedBox(height:1),
                         Text('sabarinath5604@gmail.com',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
-                                fontFamily: "Poppins",
+                                //  fontFamily: "Poppins",
                                 color: Colors.black)),
                       ],
                     ),

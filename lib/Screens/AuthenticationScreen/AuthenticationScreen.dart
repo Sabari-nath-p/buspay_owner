@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'package:buspay_owner/Screens/DashboardScreen/DashboardScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'controller.dart';
 import 'HomeScreen.dart';
@@ -24,12 +27,14 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     }
 
     try {
-      final response = await _authController.login(emailController.text, passwordController.text);
+      final response = await _authController.login(
+          emailController.text, passwordController.text);
       if (response['success']) {
         _showSnackBar('Login successful');
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeScreen()));
+        Get.to(() => DashboardScreen(), transition: Transition.rightToLeft);
       } else {
-        _showSnackBar(response['error'] ?? 'Login failed. Invalid credentials.');
+        _showSnackBar(
+            response['error'] ?? 'Login failed. Invalid credentials.');
       }
     } catch (e) {
       _showSnackBar('An error occurred: $e');
@@ -37,9 +42,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   }
 
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +54,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     );
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(252,252,252,1),
+      backgroundColor: Color.fromRGBO(252, 252, 252, 1),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Stack(
@@ -88,20 +93,20 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                             children: [
                               Text(
                                 'Sign in to your',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   color: Colors.white,
                                   fontSize: 32.sp,
-                                  fontFamily: 'Inter',
+                                  // fontFamily: 'Inter',
                                   fontWeight: FontWeight.w700,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
                               Text(
                                 'Account',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   color: Colors.white,
                                   fontSize: 32.sp,
-                                  fontFamily: 'Inter',
+                                  //  fontFamily: 'Inter',
                                   fontWeight: FontWeight.w700,
                                 ),
                                 textAlign: TextAlign.center,
@@ -111,10 +116,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                                 child: Text(
                                   "Enter your email and password to log in",
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontSize: 12.sp,
-                                    fontFamily: 'Inter',
+                                    //fontFamily: 'Inter',
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -153,10 +158,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                             ),
                             Text(
                               "Login Now",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 color: Color(0xFF6C7278),
                                 fontSize: 12.sp,
-                                fontFamily: 'Inter',
+                                //fontFamily: 'Inter',
                                 fontWeight: FontWeight.w400,
                                 letterSpacing: -0.01,
                                 height: 1.5.h,
@@ -232,13 +237,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         SizedBox(height: 16.h),
                         Row(
                           children: [
-                           
                             Spacer(),
                             Text(
                               'Forgot Password?',
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 fontSize: 12.sp,
-                                fontFamily: 'Inter',
+                                //  fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500,
                                 color: Color(0xFF0F67B1),
                               ),
@@ -248,7 +252,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         SizedBox(height: 24.h),
                         Center(
                           child: ElevatedButton(
-                            onPressed: handleLogin,  
+                            onPressed: handleLogin,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFF0F67B1),
                               minimumSize: Size(double.infinity, 48.h),
@@ -267,10 +271,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                             ),
                             child: Text(
                               'Login',
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 color: Colors.white,
                                 fontSize: 16.sp,
-                                fontFamily: 'Inter',
+                                //   fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
