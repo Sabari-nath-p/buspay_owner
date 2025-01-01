@@ -1,6 +1,14 @@
 import 'dart:convert';
 import 'package:buspay_owner/Screens/BusManagerScreen/BottomSheetScreen.dart';
+import 'package:buspay_owner/Screens/BusManagerScreen/Controller/BManagerController.dart';
+import 'package:buspay_owner/Screens/BusManagerScreen/Model/BusModel.dart';
+import 'package:buspay_owner/Screens/BusManagerScreen/Views/busRouteListView.dart';
+import 'package:buspay_owner/Screens/DashboardScreen/Controllers/DBController.dart';
+import 'package:buspay_owner/Src/appDropDown.dart';
+import 'package:buspay_owner/Src/appTextField.dart';
+import 'package:buspay_owner/Src/utils.dart';
 import 'package:buspay_owner/main.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:buspay_owner/Screens/BusManagerScreen/BusManagerScreen.dart';
 //import 'package:buspay_owner/main.dart';
@@ -9,9 +17,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BusViewScreen extends StatefulWidget {
-  var busData;
-  BusViewScreen({Key? key, required String status, required this.busData})
-      : super(key: key);
+  int busID;
+  BusViewScreen({Key? key, required this.busID}) : super(key: key);
 
   @override
   _BusViewScreenState createState() => _BusViewScreenState();
@@ -21,10 +28,6 @@ class _BusViewScreenState extends State<BusViewScreen> {
   String? selectedState;
   int? selectedDistrict;
   int? selectedBusType;
-  //List<String> selectedDays = [];
-  bool airBusSelected = false;
-  bool acBusSelected = false;
-  bool pushBackSeatSelected = false;
 
   final List<String> states = ['Kerala'];
   List districts = [];
@@ -35,55 +38,31 @@ class _BusViewScreenState extends State<BusViewScreen> {
   final TextEditingController rcNumberController = TextEditingController();
   final TextEditingController seatingCapacityController =
       TextEditingController();
-
+  BusModel? model;
   @override
   void initState() {
     super.initState();
-    fetchDistricts();
-    fetchBusTypes();
-    fetchBusPreferences();
-    busNameController.text = widget.busData["name"] ?? "";
-    rcNumberController.text = widget.busData["bus_no"] ?? "";
-    seatingCapacityController.text =
-        (widget.busData["no_of_seats"] ?? "").toString();
-    selectedDistrict = widget.busData["district_id"];
-    selectedBusType = widget.busData["bus_type_id"];
-    //selectedPreferences = widget.busData[""];
+    loadBus();
   }
 
-  Future<void> fetchDistricts() async {
-    final response = await http.get(Uri.parse(baseUrl + '/v1/districts'));
-    if (response.statusCode == 200) {
-      setState(() {
-        districts = json.decode(response.body)['data'];
-      });
-    } else {
-      throw Exception('Failed to load districts');
+  loadBus() async {
+    model = await bmctrl.fetchBus(widget.busID);
+
+    if (model != null) {
+      busNameController.text = model!.name ?? "";
+      rcNumberController.text = model!.busNo ?? "";
+      seatingCapacityController.text =
+          model!.noOfSeats.toString().replaceAll("null", "0");
+
+      selectedDistrict = model!.districtId;
+      selectedBusType = model!.busTypeId;
+      setState(() {});
     }
   }
 
-  Future<void> fetchBusTypes() async {
-    final response = await http.get(Uri.parse(baseUrl + '/v1/bus-type'));
-    if (response.statusCode == 200) {
-      setState(() {
-        busTypes = json.decode(response.body)['data'];
-      });
-    } else {
-      throw Exception('Failed to load bus types');
-    }
-  }
+  BMController bmctrl = Get.put(BMController());
 
-  Future<void> fetchBusPreferences() async {
-    final response = await http.get(Uri.parse(baseUrl + '/v1/preference'));
-    if (response.statusCode == 200) {
-      setState(() {
-        preferences = json.decode(response.body)['data'];
-      });
-    } else {
-      throw Exception('Failed to load bus preferences');
-    }
-  }
-
+  DBController dbctrl = Get.put(DBController());
   void toggleBusPreference(preference) {
     setState(() {
       if (selectedPreferences.contains(preference)) {
@@ -94,128 +73,7 @@ class _BusViewScreenState extends State<BusViewScreen> {
     });
   }
 
-  void _showBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return AddBusRouteBottomSheet();
-      },
-    );
-  }
-
 //tetxtfeild
-
-  Widget buildTextField({
-    required String labelText,
-    required String hintText,
-    TextEditingController? controller,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 5.h),
-        Text(
-          labelText,
-          style:
-              GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w500),
-        ),
-        SizedBox(height: 8.h),
-        Container(
-          height: 48.h,
-          width: 370.w,
-          decoration: BoxDecoration(
-            color: Color(0xFFDEDEDE).withOpacity(.5),
-            borderRadius: BorderRadius.circular(8),
-            // border: Border.all(color: const Color.fromRGBO(242, 244, 245, 1)),
-          ),
-          child: TextField(
-            controller: controller,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
-              hintText: hintText,
-              hintStyle: GoogleFonts.inter(
-                color: Colors.grey[600],
-                fontSize: 14.sp,
-              ),
-            ),
-            style: GoogleFonts.inter(
-              color: const Color.fromRGBO(27, 27, 27, 1),
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ),
-        SizedBox(height: 10.h),
-      ],
-    );
-  }
-
-  // Dropdown
-
-  Widget buildDropdown(
-      {required String labelText,
-      required String hintText,
-      var value,
-      required List items,
-      required Function(dynamic) onChanged,
-      String fieldName = "",
-      String keyId = ""}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 5.h),
-        Text(
-          labelText,
-          style:
-              GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w500),
-        ),
-        SizedBox(height: 8.h),
-        Container(
-          height: 48.h,
-          width: 370.w,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: Color(0xFFDEDEDE).withOpacity(.5),
-            borderRadius: BorderRadius.circular(8),
-            // border: Border.all(color: const Color.fromRGBO(242, 244, 245, 1)
-          ),
-          child: DropdownButtonFormField<dynamic>(
-            value: value,
-            decoration: InputDecoration(
-              isCollapsed: true,
-              isDense: true,
-              contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
-              border: InputBorder.none,
-              hintText: hintText,
-              hintStyle: GoogleFonts.inter(
-                color: Colors.grey[600],
-                fontSize: 14.sp,
-              ),
-            ),
-            items: items.map((item) {
-              return DropdownMenuItem(
-                value: (keyId == "") ? item : item[keyId],
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2.w),
-                  child: Text(
-                    (fieldName == "") ? item : item[fieldName],
-                    style: GoogleFonts.inter(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
-            onChanged: onChanged,
-          ),
-        ),
-        SizedBox(height: 10.h),
-      ],
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -246,29 +104,32 @@ class _BusViewScreenState extends State<BusViewScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildTextField(
-                labelText: 'Bus Name',
+              Apptextfield.primary(
+                labelText: 'Bus Name*',
                 hintText: 'Enter bus name',
                 controller: busNameController,
               ),
-              buildTextField(
-                labelText: 'RC Number',
+              Apptextfield.primary(
+                labelText: 'RC Number*',
                 hintText: 'Enter bus RC number',
                 controller: rcNumberController,
               ),
-              // labelText: 'State*',
-
+              // Appdropdown.primary(
+              //   labelText: 'State*',
+              //   hintText: 'Select route state',
+              //   value: selectedState,
+              //   items: states,
+              //   onChanged: (newValue) {
               //     setState(() {
-              //       print(selectedState);
               //       selectedState = newValue;
               //     });
               //   },
               // ),
-              buildDropdown(
+              Appdropdown.primary(
                 labelText: 'District*',
                 hintText: 'Select route district',
                 value: selectedDistrict,
-                items: districts,
+                items: dbctrl.districts.map((value) => value.toJson()).toList(),
                 fieldName: 'name',
                 keyId: 'id',
                 onChanged: (newValue) {
@@ -277,20 +138,21 @@ class _BusViewScreenState extends State<BusViewScreen> {
                   });
                 },
               ),
-              buildTextField(
-                  labelText: 'Seating Capacity',
-                  hintText: 'Enter seating capacity',
-                  controller: seatingCapacityController),
-              buildDropdown(
-                labelText: 'Bus  Type',
-                hintText: 'Select route ',
+              Apptextfield.primary(
+                labelText: 'Seating Capacity*',
+                hintText: 'Enter seating capacity',
+                controller: seatingCapacityController,
+              ),
+              Appdropdown.primary(
+                labelText: 'Bus Type',
+                hintText: 'Select route',
                 value: selectedBusType,
-                items: busTypes,
+                items: dbctrl.bustypes.map((value) => value.toJson()).toList(),
                 fieldName: 'type',
                 keyId: 'id',
                 onChanged: (newValue) {
                   setState(() {
-                    selectedDistrict = newValue;
+                    selectedBusType = newValue;
                   });
                 },
               ),
@@ -304,163 +166,47 @@ class _BusViewScreenState extends State<BusViewScreen> {
                 ),
               ),
               SizedBox(height: 8.h),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: preferences.map((pref) {
-                    bool isSelected = selectedPreferences.contains(pref);
-                    return GestureDetector(
-                      onTap: () => toggleBusPreference(pref),
-                      child: Container(
-                        height: 40.h,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 10.w, vertical: 4.h),
-                        margin: EdgeInsets.symmetric(horizontal: 5.w),
-                        decoration: BoxDecoration(
+              Wrap(
+                spacing: 5.w,
+                runSpacing: 10.h,
+                children: bmctrl.preferenceList.map((pref) {
+                  bool isSelected = selectedPreferences.contains(pref);
+                  return GestureDetector(
+                    onTap: () => toggleBusPreference(pref),
+                    child: Container(
+                      height: 40.h,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+                      margin: EdgeInsets.symmetric(horizontal: 5.w),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? const Color.fromRGBO(15, 103, 177, 1)
+                            : const Color.fromRGBO(246, 248, 250, 1),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
                           color: isSelected
                               ? const Color.fromRGBO(15, 103, 177, 1)
-                              : const Color.fromRGBO(246, 248, 250, 1),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: isSelected
-                                ? const Color.fromRGBO(15, 103, 177, 1)
-                                : const Color.fromRGBO(242, 244, 245, 1),
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            pref["name"],
-                            style: GoogleFonts.poppins(
-                              color: isSelected ? Colors.white : Colors.black,
-                              //  fontFamily: "Inter",
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
+                              : const Color.fromRGBO(242, 244, 245, 1),
                         ),
                       ),
-                    );
-                  }).toList(),
-                ),
+                      child: Text(
+                        pref.name ?? "",
+                        style: GoogleFonts.poppins(
+                          color: isSelected ? Colors.white : Colors.black,
+                          //  fontFamily: "Inter",
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
-
-              SizedBox(height: 20.h),
-
-              Container(
-                width: 350,
-                // height:142,
-                padding: EdgeInsets.only(left: 16, top: 10, right: 16),
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(221, 220, 220, 1),
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.shade300,
-                      blurRadius: 2,
-                    ),
-                  ],
+              SpacerH(20.h),
+              if (model != null)
+                BusRouteListView(
+                  model: model!,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Bus Route',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            //   fontFamily: 'Inter',
-                            color: Color.fromRGBO(0, 0, 0, 1),
-                          ),
-                        ),
-                        Container(
-                          width: 56,
-                          height: 21,
-                          decoration: BoxDecoration(
-                            color: Color.fromRGBO(15, 103, 177, 1),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Center(
-                            child: TextButton(
-                              onPressed: () {
-                                _showBottomSheet(context);
-                              },
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                              ),
-                              child: Text(
-                                'Add',
-                                style: GoogleFonts.poppins(
-                                  //         fontFamily: "Inter",
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color.fromRGBO(255, 255, 255, 1),
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 3.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 1,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Center(
-                      child: Column(
-                        children: [
-                          Icon(
-                            Icons.info,
-                            color: Colors.grey,
-                            size: 40,
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Add Bus Route',
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              color: Color.fromRGBO(141, 141, 141, 1),
-                              // fontFamily: "Inter",
-                            ),
-                          ),
-                          SizedBox(height: 18),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
               SizedBox(height: 15),
               Align(
                 alignment: Alignment.bottomCenter,
@@ -495,7 +241,6 @@ class _BusViewScreenState extends State<BusViewScreen> {
                 ),
               ),
               SizedBox(height: 8),
-
               Center(
                 child: Text(
                   "Delete Bus",

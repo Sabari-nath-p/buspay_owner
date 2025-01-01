@@ -1,3 +1,3 @@
 dependencies: \
-  /Users/sabarinathp/Works/buspay_owner/ios/build/Pods.build/Debug-iphonesimulator/shared_preferences_foundation.build/module.modulemap \
-  /Users/sabarinathp/Works/buspay_owner/ios/build/Pods.build/Debug-iphonesimulator/shared_preferences_foundation.build/DerivedSources/shared_preferences_foundation_vers.c
+  /Users/sabarinathp/Works/buspay_owner-1/ios/build/Pods.build/Debug-iphonesimulator/shared_preferences_foundation.build/module.modulemap \
+  /Users/sabarinathp/Works/buspay_owner-1/ios/build/Pods.build/Debug-iphonesimulator/shared_preferences_foundation.build/DerivedSources/shared_preferences_foundation_vers.c

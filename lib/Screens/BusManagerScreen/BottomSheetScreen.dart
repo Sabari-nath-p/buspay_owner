@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:buspay_owner/Screens/OwnerProfileScreen/OwnerProfileScreen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -130,28 +132,26 @@ class _AddBusRouteBottomSheetState extends State<AddBusRouteBottomSheet> {
 
 //  Route List
   Widget _buildRouteList() {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: 3,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(
-              'Haripad → Alappuzha',
-              style: GoogleFonts.poppins(
-                // fontFamily: "Lato",
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: Color.fromRGBO(96, 96, 96, 1),
-              ),
+    return ListView.builder(
+      itemCount: 3,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(
+            'Haripad → Alappuzha',
+            style: GoogleFonts.poppins(
+              // fontFamily: "Lato",
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: Color.fromRGBO(96, 96, 96, 1),
             ),
-            leading: Radio(
-              value: index + 1,
-              groupValue: 1,
-              onChanged: (value) {},
-            ),
-          );
-        },
-      ),
+          ),
+          leading: Radio(
+            value: index + 1,
+            groupValue: 1,
+            onChanged: (value) {},
+          ),
+        );
+      },
     );
   }
 
@@ -184,61 +184,62 @@ class _AddBusRouteBottomSheetState extends State<AddBusRouteBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 36, vertical: 28),
-      child: SizedBox(
-        height: 562,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  Text(
-                    'Add Bus Route',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+    return SizedBox(
+      height: 400.h,
+      width: 390.w,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 36, vertical: 28),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    Text(
+                      'Add Bus Route',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 5),
-                  Container(
-                    height: 1,
-                    width: 115,
-                    color: Color.fromRGBO(166, 165, 165, 1),
-                  ),
-                ],
+                    SizedBox(height: 5),
+                    Container(
+                      height: 1,
+                      width: 115,
+                      color: Color.fromRGBO(166, 165, 165, 1),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 23),
-            _buildLabel('Starting Time'),
-            const SizedBox(height: 8),
-            _buildTextField('12:00:00 PM', startTimeController),
-            const SizedBox(height: 23),
-            _buildLabel('Finishing Time'),
-            const SizedBox(height: 8),
-            _buildTextField('12:00:00 PM', finishTimeController),
-            const SizedBox(height: 16),
-            _buildLabel('Trip Day'),
-            const SizedBox(height: 8),
-            _buildDaySelector(setState),
-            const SizedBox(height: 16),
-            _buildLabel('Select Route'),
-            const SizedBox(height: 8),
-            _buildTextField('Search Route', routeSearchController),
-            const SizedBox(height: 8),
-            _buildRouteList(),
-            const SizedBox(height: 16),
-            Center(
-              child: _buildElevatedButton(
-                label: 'Add Route',
-                onPressed: () => _submitRoute(context),
+              const SizedBox(height: 23),
+              _buildLabel('Starting Time'),
+              const SizedBox(height: 8),
+              _buildTextField('12:00:00 PM', startTimeController),
+              const SizedBox(height: 23),
+              _buildLabel('Finishing Time'),
+              const SizedBox(height: 8),
+              _buildTextField('12:00:00 PM', finishTimeController),
+              const SizedBox(height: 16),
+              _buildLabel('Trip Day'),
+              const SizedBox(height: 8),
+              _buildDaySelector(setState),
+              const SizedBox(height: 16),
+              _buildLabel('Select Route'),
+              const SizedBox(height: 8),
+              _buildTextField('Search Route', routeSearchController),
+              const SizedBox(height: 8),
+              _buildRouteList(),
+              const SizedBox(height: 16),
+              Center(
+                child: _buildElevatedButton(
+                  label: 'Add Route',
+                  onPressed: () => _submitRoute(context),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

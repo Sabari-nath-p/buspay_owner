@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:buspay_owner/Screens/BusManagerScreen/Model/BusListModel.dart';
+import 'package:buspay_owner/Screens/BusManagerScreen/Model/BusModel.dart';
 import 'package:buspay_owner/Screens/BusManagerScreen/Model/BusPreferences.dart';
 import 'package:buspay_owner/Screens/DashboardScreen/Controllers/DBController.dart';
 import 'package:buspay_owner/main.dart';
@@ -67,6 +68,17 @@ class BMController extends GetxController {
     }
     isLoading = false;
     update();
+  }
+
+  Future fetchBus(int busid) async {
+    final response =
+        await get(Uri.parse(baseUrl + '/v1/bus/$busid'), headers: authToken);
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return BusModel.fromJson(data["data"]);
+    } else {
+      return null;
+    }
   }
 
   @override

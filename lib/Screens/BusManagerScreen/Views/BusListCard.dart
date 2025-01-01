@@ -6,6 +6,7 @@ import 'package:buspay_owner/Src/appText.dart';
 import 'package:buspay_owner/Src/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -30,21 +31,13 @@ class BuslistCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        // if (status == 'Active') {
         // Navigator.push(
         //  context,
-        // MaterialPageRoute(
-        //   builder: (context) => BusViewScreen(
-        //     status: status,
-        //     busData: busData,
-        //   ),
-        // ),
-        // );
-        // } else {
-        //   ScaffoldMessenger.of(context).showSnackBar(
-        //     SnackBar(content: Text('This bus is not active.')),
-        //   );
-        // }
+        Get.to(
+            () => BusViewScreen(
+                  busID: model.id!,
+                ),
+            transition: Transition.rightToLeft);
       },
       child: Container(
         height: 68,
