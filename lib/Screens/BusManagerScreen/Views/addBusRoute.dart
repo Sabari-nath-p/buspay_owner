@@ -42,7 +42,7 @@ class AddBusRouteSheet extends StatelessWidget {
             Container(
               height: 1,
               width: 115,
-              color: Color.fromRGBO(166, 165, 165, 1),
+              color: Color(0xFFA6A5A5),
             ),
             Expanded(
                 child: SingleChildScrollView(

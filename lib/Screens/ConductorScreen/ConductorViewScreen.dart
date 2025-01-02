@@ -1,7 +1,9 @@
 import 'package:buspay_owner/Screens/ConductorScreen/CreateConductorScreen.dart';
 import 'package:buspay_owner/Screens/ConductorScreen/EditConductorScreen.dart';
+import 'package:buspay_owner/Screens/ConductorScreen/Views/ConductorListCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ConductorViewScreen extends StatefulWidget {
@@ -15,9 +17,9 @@ class _ConductorViewScreenState extends State<ConductorViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(252, 252, 252, 1),
+      backgroundColor: Color(0xFFFCFCFC),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(15, 103, 177, 1),
+        backgroundColor: Color(0xFF0F67B1),
         title: Text(
           'Conductors',
           style: GoogleFonts.poppins(color: Colors.white),
@@ -33,9 +35,9 @@ class _ConductorViewScreenState extends State<ConductorViewScreen> {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.only(left: 20, right: 20, top: 24),
-              width: 352,
-              height: 48,
+              margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 24.h),
+              width: 352.w,
+              height: 48.h,
               child: TextField(
                 controller: TextEditingController(text: '  Search Bus'),
                 enabled: false,
@@ -57,16 +59,10 @@ class _ConductorViewScreenState extends State<ConductorViewScreen> {
                 keyboardType: TextInputType.text,
               ),
             ),
-            SizedBox(height: 16),
-            Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  return CustomCardWidget();
-                },
-              ),
-            ),
+            SizedBox(height: 20.h),
+          ConductorListCard(),
+            ConductorListCard(),
+             SizedBox(height: 20.h),
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -107,53 +103,3 @@ class _ConductorViewScreenState extends State<ConductorViewScreen> {
   }
 }
 
-class CustomCardWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      margin: EdgeInsets.symmetric(vertical: 8),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: ListTile(
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => EditConductorScreen()),
-            );
-          },
-          child: CircleAvatar(
-            backgroundImage: AssetImage('assets/profileimage.png'),
-            radius: 28,
-          ),
-        ),
-        title: Text(
-          "KIMS",
-          style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-              //   fontFamily: "Poppins",
-              color: Color.fromRGBO(3, 24, 44, 1)),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "james@ansamail.com",
-              style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12,
-                  //  fontFamily: "Poppins",
-                  color: Color.fromRGBO(108, 117, 125, 1)),
-            ),
-            SizedBox(height: 4),
-            Text("9497677914"),
-          ],
-        ),
-        trailing: Icon(Icons.arrow_forward_ios),
-      ),
-    );
-  }
-}

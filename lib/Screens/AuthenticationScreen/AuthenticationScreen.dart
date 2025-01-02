@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'controller.dart';
-import 'HomeScreen.dart';
+
 
 class AuthenticationScreen extends StatefulWidget {
   @override

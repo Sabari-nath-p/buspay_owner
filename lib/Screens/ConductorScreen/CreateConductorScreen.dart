@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:buspay_owner/Screens/ConductorScreen/ConductorViewScreen.dart';
+import 'package:buspay_owner/Src/appDropDown.dart';
+import 'package:buspay_owner/Src/appTextField.dart';
 import 'package:buspay_owner/main.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -13,9 +15,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateConductorScreen extends StatefulWidget {
-  CreateConductorScreen({
-    super.key,
-  });
+ 
+  CreateConductorScreen({Key? key, }) : super(key: key) ;
 
   @override
   State<CreateConductorScreen> createState() => _CreateConductorScreenState();
@@ -98,47 +99,40 @@ class _CreateConductorScreenState extends State<CreateConductorScreen> {
   }
 
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Color.fromRGBO(252, 252, 252, 1),
-        appBar: AppBar(
-          backgroundColor: const Color.fromRGBO(15, 103, 177, 1),
-          title: Text(
-            'Conductors',
-            style: GoogleFonts.poppins(
-              color: Colors.white,
-              // fontFamily: "Poppins",
-              fontWeight: FontWeight.w600,
-              fontSize: 21,
-            ),
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new_outlined,
-                color: Colors.white),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+    return Scaffold(
+      backgroundColor: Color(0xFFFCFCFC),
+      appBar: AppBar(
+        backgroundColor: Color(0xFF0F67B1),
+        title: Text(
+          'Conductors',
+          style: GoogleFonts.poppins(color: Colors.white),
         ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
         body: SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(
                 height: 13,
               ),
-              buildTextField(
+              Apptextfield.primary(
                   labelText: "Conductor Name",
                   hintText: "Enter Conductor Name",
                   controller: namecontroller),
-              buildTextField(
+              Apptextfield.primary(
                   labelText: "Conductor Phone",
                   hintText: "Enter Conductor Phone",
                   controller: phcontroller),
-              buildTextField(
+              Apptextfield.primary(
                   labelText: "Conductor Mail",
                   hintText: "Enter Conductor mail",
                   controller: mailcontroller),
-              buildDropdown(
+              Appdropdown.primary(
                   labelText: "Assigned Bus",
                   hintText: "Assigned bus",
                   items: Assign,
@@ -150,18 +144,18 @@ class _CreateConductorScreenState extends State<CreateConductorScreen> {
                       BusAssign = newValue;
                     });
                   }),
-              buildTextField(
+              Apptextfield.primary(
                   labelText: "Password",
                   hintText: "Enter Password",
                   controller: Passwordcontroller),
-              buildTextField(
+              Apptextfield.primary(
                   labelText: "Confirm Password",
                   hintText: "Enter Password",
                   controller: confirmpasscontroller),
               SizedBox(height: 105.h),
               Container(
-                width: 323.74,
-                height: 40,
+                width: 323.74.w,
+                height: 40.h,
                 margin: EdgeInsets.only(bottom: 23, left: 33, right: 33),
                 child: ElevatedButton(
                   onPressed: () {
@@ -179,12 +173,12 @@ class _CreateConductorScreenState extends State<CreateConductorScreen> {
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                       //    fontFamily: "Poppins",
-                      color: Color.fromRGBO(255, 255, 255, 1),
+                      color: Color(0xFFFFFFFF),
                     ),
                     textAlign: TextAlign.end,
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(15, 103, 177, 1),
+                    backgroundColor: Color(0xFF0F67B1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -194,225 +188,7 @@ class _CreateConductorScreenState extends State<CreateConductorScreen> {
             ],
           ),
         ),
-      ),
+    
     );
   }
 }
-
-// _textfield(String  labelText, String hintText,) {
-
-//   return Column(
-//     crossAxisAlignment: CrossAxisAlignment.start,
-//    // mainAxisAlignment: MainAxisAlignment.start,
-//     children: [
-//       SizedBox(height:8),
-//       Text(
-//         labelText,
-//         selectionColor: Color.fromRGBO(9,10,10,1),
-//         style:
-//             GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w500)
-
-//       ),
-//       SizedBox(height: 8.h),
-//       Container(
-//         alignment: Alignment.centerRight,
-//         height: 48.h,
-//         width: 327.w,
-//         decoration: BoxDecoration(
-//           color:  Color.fromARGB(255, 222, 222, 222),
-//           border: Border.all(color: Color.fromRGBO(242,244,245, 1)),
-//           borderRadius: BorderRadius.circular(8),
-//         ),
-//         child: TextFormField(
-//           controller: controller,
-//           decoration: InputDecoration(
-//               border: InputBorder.none,
-//               contentPadding:
-//                   EdgeInsets.symmetric(horizontal:18.w),
-//                hintText: hintText,
-//                hintStyle: GoogleFonts.inter(
-//               color: Colors.grey[600],
-//               fontSize: 14.sp,
-//             ),
-
-//                  ),
-//           style: GoogleFonts.inter(
-//               color:  Color.fromRGBO(27,27,27,1),
-//               fontSize: 16.sp,
-//               fontWeight: FontWeight.w400),
-//         ),
-//       ),
-//       SizedBox(height: 1.68.h),
-//     ],
-//   );
-// }
-Widget buildTextField({
-  required String labelText,
-  required String hintText,
-  TextEditingController? controller,
-}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      SizedBox(height: 8.h),
-      Text(
-        labelText,
-        style: GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w500),
-      ),
-      SizedBox(height: 8.h),
-      Container(
-        height: 48.h,
-        width: 327.w,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 222, 222, 222),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: const Color.fromRGBO(242, 244, 245, 1)),
-        ),
-        child: TextField(
-          controller: controller,
-          textAlignVertical: TextAlignVertical.center,
-          textAlign: TextAlign.start,
-          decoration: InputDecoration(
-            isDense: true,
-            isCollapsed: true,
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
-            hintText: hintText,
-            hintStyle: GoogleFonts.inter(
-              color: Colors.grey[600],
-              fontSize: 14.sp,
-            ),
-          ),
-          style: GoogleFonts.inter(
-            color: const Color.fromRGBO(27, 27, 27, 1),
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      ),
-      SizedBox(height: 16.h),
-    ],
-  );
-}
-
-Widget buildDropdown(
-    {required String labelText,
-    required String hintText,
-    var value,
-    required List items,
-    required Function(dynamic) onChanged,
-    String fieldName = "",
-    String keyId = ""}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      SizedBox(height: 8.h),
-      Text(
-        labelText,
-        style: GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w500),
-      ),
-      SizedBox(height: 8.h),
-      Container(
-        height: 48.h,
-        width: 327.w,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 222, 222, 222),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: const Color.fromRGBO(242, 244, 245, 1)),
-        ),
-        child: DropdownButtonFormField<dynamic>(
-          value: value,
-          decoration: InputDecoration(
-            isCollapsed: true,
-            isDense: true,
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
-            border: InputBorder.none,
-            hintText: hintText,
-            hintStyle: GoogleFonts.inter(
-              color: Colors.grey[600],
-              fontSize: 14.sp,
-            ),
-          ),
-          items: items.map((item) {
-            return DropdownMenuItem(
-              value: (keyId == " ") ? item : item[keyId],
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 18.w),
-                child: Text(
-                  (fieldName == "") ? item : item[fieldName],
-                  style: GoogleFonts.inter(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-          onChanged: onChanged,
-        ),
-      ),
-      SizedBox(height: 16.h),
-    ],
-  );
-}
-
-//   _textbox(String labelText, String hintText) {
-
-//   return Column(
-//     crossAxisAlignment: CrossAxisAlignment.start,
-//     children: [
-//       SizedBox(height: 8.h),
-//        Text(
-//         labelText,
-//         selectionColor: Color.fromRGBO(9,10,10,1),
-//         style:
-//             GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w500)
-
-//       ),
-//       SizedBox(height: 8.h),
-//       Container(
-//           alignment: Alignment.centerLeft,
-//           height: 48.h,
-//           width: 327.w,
-//           decoration: BoxDecoration(
-//           color:  Color.fromARGB(255, 222, 222, 222),
-//           border: Border.all(color: Color.fromRGBO(242,244,245, 1)),
-//           borderRadius: BorderRadius.circular(8),
-//         ),
-//           child:DropdownButton<String>(
-//               isExpanded: true,
-//               underline: Container(),
-
-//                hint: Padding(
-//             padding: EdgeInsets.symmetric(horizontal:18.w),
-//             child: Text(
-//               hintText,
-//               style: GoogleFonts.inter(
-//                 color: Colors.grey[600],
-//                 fontSize: 14.sp,
-//               ),
-//             ),
-//           ),
-//               items: []
-//                   .map((e) => DropdownMenuItem<String>(
-
-//                         value: e,
-//                        child: Padding(
-//                       padding: EdgeInsets.symmetric(horizontal:18.w),
-//                       child: Text(
-//                         e,
-//                         style: GoogleFonts.inter(
-//                           fontSize: 16.sp,
-//                           fontWeight: FontWeight.w400,
-//                         ),
-//                       ),
-//                     ),
-//                   ))
-//                   .toList(),
-//               onChanged: (value) {})),
-//       SizedBox(height: 1.68.h),
-//     ],
-//   );
-// }

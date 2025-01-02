@@ -16,7 +16,7 @@ class DBOverviewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 111.w,
-      height: 100.h,
+      height: 110.h,
       padding: EdgeInsets.all(10..w),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),

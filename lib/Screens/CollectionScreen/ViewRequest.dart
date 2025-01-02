@@ -1,4 +1,6 @@
+import 'package:buspay_owner/Src/appText.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Viewrequest extends StatelessWidget {
@@ -7,16 +9,14 @@ class Viewrequest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(252, 252, 252, 1),
+      backgroundColor: Color(0xFFFCFCFC),
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(15, 103, 177, 1),
+        backgroundColor: Color(0xFF0F67B1),
         title: Text(
           'Collection Request',
           style: GoogleFonts.poppins(
             color: Colors.white,
-            // fontFamily: "Poppins",
-            fontWeight: FontWeight.w600,
-            fontSize: 21,
+               
           ),
         ),
         leading: IconButton(
@@ -29,6 +29,7 @@ class Viewrequest extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
+
         child: ListView(
           children: [
             collectionItem(2102.00, '11/12/2024 12:10:00 AM',
@@ -57,34 +58,32 @@ class Viewrequest extends StatelessWidget {
       padding: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
-        border: Border.all(color: Color.fromRGBO(15, 103, 177, 0.15)),
+        border: Border.all(color: Color(0x250F67B1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Text(
-                '₹ $amount',
-                style: GoogleFonts.poppins(
+              appText.primaryText(
+               text: '₹ $amount',
+              
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                     // fontFamily: "Poppins",
                     color: Colors.black),
-              ),
-              SizedBox(width: 222),
+              SizedBox(width: 218.w),
               Text(
                 status,
                 style: GoogleFonts.poppins(
                   color: statusColor,
                   fontSize: 9,
                   fontWeight: FontWeight.w500,
-                  // fontFamily: "Poppins",
                 ),
               ),
             ],
           ),
-          SizedBox(height: 1),
+          SizedBox(height: 1.h),
           Row(
             children: [
               Text(
@@ -92,21 +91,20 @@ class Viewrequest extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 10,
                   fontWeight: FontWeight.w400,
-                  // fontFamily: "Lato",
-                  color: Color.fromRGBO(96, 96, 96, 1),
+                 
+                  color: Color(0xFF606060),
                 ),
               ),
-              SizedBox(width: 88),
+              SizedBox(width: 88.w),
               Text(
                 date2,
                 style: GoogleFonts.poppins(
                   fontSize: 10,
                   fontWeight: FontWeight.w400,
-                  // fontFamily: " Lato",
-                  color: Color.fromRGBO(96, 96, 96, 1),
+                  color: Color(0xFF606060),
                 ),
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 8.h),
             ],
           ),
         ],
@@ -121,34 +119,35 @@ class Viewrequest extends StatelessWidget {
       padding: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
-        border: Border.all(color: Color.fromRGBO(15, 103, 177, 0.15)),
+        border: Border.all(color: Color(0x250F67B1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Text(
-                '₹ $amount',
-                style: GoogleFonts.poppins(
+              appText.primaryText(
+  
+               text: '₹ $amount',
+                
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                     //   fontFamily: "Poppins",
-                    color: Colors.black),
+                    color: Colors.black
               ),
-              SizedBox(width: 232),
+              SizedBox(width: 232.w),
               Text(
                 status,
                 style: GoogleFonts.poppins(
                   fontSize: 9,
                   fontWeight: FontWeight.w500,
                   //  fontFamily: "Poppins",
-                  color: Color.fromRGBO(214, 49, 49, 1),
+                  color: Color(0xFFD63131),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 1),
+          SizedBox(height:1 .h),
           Row(
             children: [
               Text(
@@ -157,7 +156,7 @@ class Viewrequest extends StatelessWidget {
                   fontSize: 10,
                   fontWeight: FontWeight.w400,
                   // fontFamily: "Lato",
-                  color: Color.fromRGBO(96, 96, 96, 1),
+                  color: Color(0xFF606060),
                 ),
               ),
               SizedBox(width: 85),
@@ -167,7 +166,7 @@ class Viewrequest extends StatelessWidget {
                   fontSize: 10,
                   fontWeight: FontWeight.w400,
                   // fontFamily: " Lato",
-                  color: Color.fromRGBO(96, 96, 96, 1),
+                  color: Color(0xFF606060),
                 ),
               ),
             ],
@@ -176,9 +175,9 @@ class Viewrequest extends StatelessWidget {
           Text(
             rejectionReason,
             style: GoogleFonts.poppins(
-                color: Color.fromRGBO(214, 49, 49, 1),
+                color: Color(0xFFD63131),
                 fontSize: 10,
-                //  fontFamily: "Lato",
+            
                 fontWeight: FontWeight.w500),
           ),
         ],

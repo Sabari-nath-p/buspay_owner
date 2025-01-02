@@ -1,4 +1,5 @@
 import 'package:buspay_owner/Screens/ConductorScreen/ConductorViewScreen.dart';
+import 'package:buspay_owner/Src/appText.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,22 +9,16 @@ class EditConductorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color.fromRGBO(252, 252, 252, 1),
+      return Scaffold(
+      backgroundColor: Color(0xFFFCFCFC),
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(15, 103, 177, 1),
+        backgroundColor: Color(0xFF0F67B1),
         title: Text(
-          'Conductor',
-          style: GoogleFonts.poppins(
-            color: Colors.white,
-            //fontFamily: "Poppins",
-            fontWeight: FontWeight.w600,
-            fontSize: 21,
-          ),
+          'Conductors',
+          style: GoogleFonts.poppins(color: Colors.white),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_outlined,
-              color: Colors.white),
+          icon: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },

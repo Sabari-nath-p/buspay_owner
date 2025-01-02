@@ -55,7 +55,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
         selectedState == null ||
         selectedDistrict == null ||
         selectedBusType == null) {
-      Fluttertoast.showToast(msg: "Please fill all data");
+    Fluttertoast.showToast(msg: "Please fill all data");  
       return;
     }
     final busData = {

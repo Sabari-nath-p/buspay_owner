@@ -1,5 +1,7 @@
-import 'package:buspay_owner/Screens/AuthenticationScreen/CollectionScreen.dart%2000-12-04-899.dart';
+//import 'package:buspay_owner/Screens/AuthenticationScreen/CollectionScreen.dart%2000-12-04-899.dart';
 import 'package:buspay_owner/Screens/BusManagerScreen/BusManagerScreen.dart';
+import 'package:buspay_owner/Screens/CollectionScreen/CollectionScreen.dart';
+import 'package:buspay_owner/Screens/ConductorScreen/ConductorViewScreen.dart';
 import 'package:buspay_owner/Screens/DashboardScreen/Controllers/DBController.dart';
 import 'package:buspay_owner/Screens/DashboardScreen/Views/DBManageCard.dart';
 import 'package:buspay_owner/Screens/DashboardScreen/Views/DBOverViewCard.dart';
@@ -108,10 +110,19 @@ class DashboardScreen extends StatelessWidget {
                           ),
                           DbManageCard(
                               buttonName: "My Conductors",
-                              assetImage: "assets/conductors.png"),
+                              assetImage: "assets/conductors.png",
+                                onTap: () {
+                              Get.to(() => ConductorViewScreen(),
+                                  transition: Transition.rightToLeft);
+                            },
+                          ),
                           DbManageCard(
                               buttonName: "My Collection",
-                              assetImage: "assets/collections.png")
+                              assetImage: "assets/collections.png",  onTap: () {
+                              Get.to(() => CollectionScreen(),
+                                  transition: Transition.rightToLeft);
+                            },
+                          ),
                         ],
                       ),
                       SpacerH(30.h),
