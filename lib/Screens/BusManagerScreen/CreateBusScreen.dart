@@ -5,6 +5,7 @@ import 'package:buspay_owner/Screens/BusManagerScreen/Model/BusPreferences.dart'
 import 'package:buspay_owner/Screens/DashboardScreen/Controllers/DBController.dart';
 import 'package:buspay_owner/Src/appButtons.dart';
 import 'package:buspay_owner/Src/appDropDown.dart';
+import 'package:buspay_owner/Src/appText.dart';
 import 'package:buspay_owner/Src/appTextField.dart';
 import 'package:buspay_owner/Src/utils.dart';
 import 'package:buspay_owner/main.dart';
@@ -14,7 +15,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' ;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -80,14 +81,14 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
       backgroundColor: const Color.fromRGBO(252, 252, 252, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(15, 103, 177, 1),
-        title: Text(
-          'Create Bus',
-          style: GoogleFonts.poppins(
+        title: appText.primaryText(
+         text: 'Create Bus',
+          
             color: Colors.white,
             // fontFamily: "Poppins",
             fontWeight: FontWeight.w600,
             fontSize: 21,
-          ),
+          
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_outlined,
@@ -157,14 +158,14 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                   });
                 },
               ),
-              Text(
-                'Bus Preference*',
-                style: GoogleFonts.poppins(
+              appText.primaryText(
+                text:'Bus Preference*',
+               
                   //   fontFamily: "Inter",
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: Color.fromRGBO(9, 10, 10, 1),
-                ),
+                
               ),
               SizedBox(height: 8.h),
               Wrap(

@@ -14,6 +14,7 @@ class BMController extends GetxController {
   bool isLoading = true;
   List<BusListModel> busList = [];
   List<BusPreferences> preferenceList = [];
+  
   Future<void> fetchBusData() async {
     isLoading = true;
     busList.clear();

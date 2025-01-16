@@ -46,9 +46,9 @@ class Collectionviewcard extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               child: Row(
                 children: [
-                  _buildText('Sinthumol', 13, FontWeight.w500),
+                  appText.primaryText(text:'Sinthumol',fontSize:  13,fontWeight:  FontWeight.w500),
                   Spacer(),
-                  _buildText('(Haripad - Alappuzha)', 10, FontWeight.w500),
+                appText.primaryText(text:'(Haripad - Alappuzha)',fontSize:10,fontWeight: FontWeight.w500),
                   Spacer(flex: 3),
                   Container(
                     height: 22.h,
@@ -74,8 +74,8 @@ class Collectionviewcard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildText('2100.88', 18, FontWeight.w700),
-                  _buildText('54%', 18, FontWeight.w800),
+                  appText.primaryText(text:'2100.88',fontSize:18,fontWeight:  FontWeight.w700),
+                  appText.primaryText(text: '54%', fontSize: 18,fontWeight: FontWeight.w800),
                 ],
               ),
             ),
@@ -95,31 +95,31 @@ class Collectionviewcard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        _buildText('Reema Shareen', 14, FontWeight.w600),
+                        appText.primaryText(text: 'Reema Shareen', fontSize:14,fontWeight:  FontWeight.w600),
                         Spacer(),
-                        _buildText('20', 14, FontWeight.w600),
+                        appText.primaryText(text:'20', fontSize: 10,fontWeight:  FontWeight.w600),
                       ],
                     ),
                     Row(
                       children: [
-                        _buildText('Conductor Incharge', 10, FontWeight.w400),
+                        appText.primaryText(text: 'Conductor Incharge',fontSize:  10, fontWeight:FontWeight.w400),
                         Spacer(),
-                        _buildText('Total Ticket Sold', 10, FontWeight.w400),
+                        appText.primaryText(text:'Total Ticket Sold', fontSize:10, fontWeight:FontWeight.w400),
                       ],
                     ),
                     SizedBox(height: 10.h),
                     Row(
                       children: [
-                        _buildText('12-10-2024', 14, FontWeight.w600),
+                        appText.primaryText(text: '12-10-2024',fontSize:  14,fontWeight:  FontWeight.w600),
                         Spacer(),
-                        _buildText('12:30 Pm', 14, FontWeight.w600),
+                        appText.primaryText(text:'12:30 Pm',fontSize:14, fontWeight:FontWeight.w600),
                       ],
                     ),
                     Row(
                       children: [
-                        _buildText('Date and Time', 10, FontWeight.w400),
+                        appText.primaryText(text:'Date and Time', fontSize:10 ,fontWeight:  FontWeight.w400),
                         Spacer(),
-                        _buildText('Completed Time', 10, FontWeight.w400),
+                        appText.primaryText(text: 'Completed Time', fontSize: 10, fontWeight:  FontWeight.w400),
                       ],
                     ),
                   ],

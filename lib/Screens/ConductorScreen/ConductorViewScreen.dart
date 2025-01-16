@@ -1,6 +1,7 @@
 import 'package:buspay_owner/Screens/ConductorScreen/CreateConductorScreen.dart';
 import 'package:buspay_owner/Screens/ConductorScreen/EditConductorScreen.dart';
 import 'package:buspay_owner/Screens/ConductorScreen/Views/ConductorListCard.dart';
+import 'package:buspay_owner/Src/appText.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -60,14 +61,14 @@ class _ConductorViewScreenState extends State<ConductorViewScreen> {
               ),
             ),
             SizedBox(height: 20.h),
-          ConductorListCard(),
+            ConductorListCard(),
             ConductorListCard(),
              SizedBox(height: 20.h),
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                width: 323.74,
-                height: 40,
+                width: 323.74.w,
+                height: 40.h,
                 margin: EdgeInsets.only(bottom: 16),
                 child: ElevatedButton(
                   onPressed: () {
@@ -78,17 +79,16 @@ class _ConductorViewScreenState extends State<ConductorViewScreen> {
                       ),
                     );
                   },
-                  child: Text(
-                    'Create Conductor',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
+                  child: appText.primaryText(
+                    text:'Create Conductor',
+                   fontSize: 16,
                       fontWeight: FontWeight.w500,
                       // fontFamily: "Poppins",
-                      color: Color.fromRGBO(255, 255, 255, 1),
-                    ),
+                     
+                    
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(15, 103, 177, 1),
+                    backgroundColor: Color(0xFF0F67B1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),

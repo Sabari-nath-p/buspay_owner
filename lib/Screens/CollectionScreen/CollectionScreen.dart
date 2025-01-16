@@ -3,7 +3,7 @@ import 'package:buspay_owner/Screens/CollectionScreen/Views/ExpandableCard.dart'
 import 'package:buspay_owner/Screens/CollectionScreen/Views/collectionCard.dart';
 import 'package:buspay_owner/Screens/CollectionScreen/Views/collectionViewcard.dart';
 import 'package:buspay_owner/Screens/CollectionScreen/Views/settleBottomsheet.dart';
-import 'package:buspay_owner/Screens/CollectionScreen/Views/todayDate.dart';
+import 'package:buspay_owner/Screens/CollectionScreen/Views/Datecard.dart';
 import 'package:buspay_owner/Screens/CollectionScreen/Views/totalViewcard.dart';
 import 'package:buspay_owner/Src/appText.dart';
 import 'package:fl_chart/fl_chart.dart';

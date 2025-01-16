@@ -33,8 +33,8 @@ class Collectioncard extends StatelessWidget {
           ),
           // Text Content
           Positioned(
-            top: 30,
-            left: 20.7,
+            top: 30.h,
+            left: 20.7.w,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -75,19 +75,19 @@ class Collectioncard extends StatelessWidget {
           ),
           // Pie Chart
           Positioned(
-            right: 10,
-            top: 10,
-            bottom:10,
+            right: 10.w,
+            top: 10.h,
+            bottom:10.h,
             child: SizedBox(
-              height: 154,
-              width: 154,
+              height: 154.h,
+              width: 154.w,
               child: Stack(
                 children: [
                   // Background White Circle
                   Center(
                     child: Container(
-                      height: 180,
-                      width: 180,
+                      height: 180.h,
+                      width: 180.w ,
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
@@ -106,7 +106,7 @@ class Collectioncard extends StatelessWidget {
                         ),
                         PieChartSectionData(
                           value: 30,
-                          color: Color.fromRGBO(246, 198, 26, 1),
+                          color: Color(0xFFF6C61A),
                           radius: 20,
                           showTitle: false,
                         ),
@@ -121,21 +121,17 @@ class Collectioncard extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Collection',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
+                        appText.primaryText(
+                          text:'Collection',
+                        fontSize: 16,
                             fontWeight: FontWeight.w700,
                             color: Colors.black,
-                          ),
-                        ),
-                        Text(
-                          'Today-Total',
-                          style: GoogleFonts.poppins(
-                            fontSize: 10,
+                         ),
+                        appText.primaryText(
+                          text: 'Today-Total',
+                           fontSize: 10,
                             color: Colors.black,
                             fontWeight: FontWeight.w600,
-                          ),
                         ),
                       ],
                     ),

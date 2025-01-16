@@ -4,6 +4,7 @@ import 'dart:ffi';
 
 import 'package:buspay_owner/Screens/ConductorScreen/ConductorViewScreen.dart';
 import 'package:buspay_owner/Src/appDropDown.dart';
+import 'package:buspay_owner/Src/appText.dart';
 import 'package:buspay_owner/Src/appTextField.dart';
 import 'package:buspay_owner/main.dart';
 import 'package:get/get.dart';
@@ -51,7 +52,7 @@ class _CreateConductorScreenState extends State<CreateConductorScreen> {
     }
   }
 
-  void createconductor() async {
+  Future <void> createconductor() async {
     if (namecontroller.text.isEmpty ||
         phcontroller.text.isEmpty ||
         mailcontroller.text.isEmpty ||
@@ -115,77 +116,82 @@ class _CreateConductorScreenState extends State<CreateConductorScreen> {
         ),
       ),
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 13,
-              ),
-              Apptextfield.primary(
-                  labelText: "Conductor Name",
-                  hintText: "Enter Conductor Name",
-                  controller: namecontroller),
-              Apptextfield.primary(
-                  labelText: "Conductor Phone",
-                  hintText: "Enter Conductor Phone",
-                  controller: phcontroller),
-              Apptextfield.primary(
-                  labelText: "Conductor Mail",
-                  hintText: "Enter Conductor mail",
-                  controller: mailcontroller),
-              Appdropdown.primary(
-                  labelText: "Assigned Bus",
-                  hintText: "Assigned bus",
-                  items: Assign,
-                  value: BusAssign,
-                  fieldName: "name",
-                  keyId: "id",
-                  onChanged: (newValue) {
-                    setState(() {
-                      BusAssign = newValue;
-                    });
-                  }),
-              Apptextfield.primary(
-                  labelText: "Password",
-                  hintText: "Enter Password",
-                  controller: Passwordcontroller),
-              Apptextfield.primary(
-                  labelText: "Confirm Password",
-                  hintText: "Enter Password",
-                  controller: confirmpasscontroller),
-              SizedBox(height: 105.h),
-              Container(
-                width: 323.74.w,
-                height: 40.h,
-                margin: EdgeInsets.only(bottom: 23, left: 33, right: 33),
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (Passwordcontroller.text == confirmpasscontroller.text)
-                      createconductor();
-                    else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Incorrect password.')),
-                      );
-                    }
-                  },
-                  child: Text(
-                    'Create Conductor',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      //    fontFamily: "Poppins",
-                      color: Color(0xFFFFFFFF),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0,right:20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 13,
+                ),
+                Apptextfield.primary(
+                    labelText: "Conductor Name",
+                    hintText: "Enter Conductor Name",
+                    controller: namecontroller),
+                Apptextfield.primary(
+                    labelText: "Conductor Phone",
+                    hintText: "Enter Conductor Phone",
+                    controller: phcontroller),
+                Apptextfield.primary(
+                    labelText: "Conductor Mail",
+                    hintText: "Enter Conductor mail",
+                    controller: mailcontroller),
+                Appdropdown.primary(
+                    labelText: "Assigned Bus",
+                    hintText: "Assigned bus",
+                    items: Assign,
+                    value: BusAssign,
+                    fieldName: "name",
+                    keyId: "id",
+                    onChanged: (newValue) {
+                      setState(() {
+                        BusAssign = newValue;
+                      });
+                    }),
+                Apptextfield.primary(
+                    labelText: "Password",
+                    hintText: "Enter Password",
+                    controller: Passwordcontroller),
+                Apptextfield.primary(
+                    labelText: "Confirm Password",
+                    hintText: "Enter Password",
+                    controller: confirmpasscontroller),
+                SizedBox(height: 105.h),
+                Container(
+                  width: 323.74.w,
+                  height: 40.h,
+                  margin: EdgeInsets.only(bottom: 23, left: 33, right: 33),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (Passwordcontroller.text == confirmpasscontroller.text)
+                        createconductor();
+                      else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Incorrect password.')),
+                        );
+                      }
+                    },
+                    child: appText.primaryText(
+                      text:'Create Conductor',
+                     
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        //    fontFamily: "Poppins",
+                        color: Color(0xFFFFFFFF),
+                      
+                      
                     ),
-                    textAlign: TextAlign.end,
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF0F67B1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF0F67B1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
     
