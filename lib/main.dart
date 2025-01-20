@@ -26,7 +26,8 @@ class buspay_owner extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(390, 850),
       builder: (context, child) => GetMaterialApp(
-          home: (login == "IN") ? DashboardScreen() : AuthenticationScreen()),
+          home:  AuthenticationScreen()),
+        //  (login == "IN") ? DashboardScreen() :
     );
   }
 }
