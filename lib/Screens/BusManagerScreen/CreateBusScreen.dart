@@ -36,8 +36,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
 
   final TextEditingController busNameController = TextEditingController();
   final TextEditingController rcNumberController = TextEditingController();
-  final TextEditingController seatingCapacityController =
-      TextEditingController();
+  final TextEditingController seatingCapacityController = TextEditingController();
 
   void toggleBusPreference(preference) {
     setState(() {

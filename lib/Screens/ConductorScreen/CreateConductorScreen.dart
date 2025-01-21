@@ -149,11 +149,11 @@ class _CreateConductorScreenState extends State<CreateConductorScreen> {
                         BusAssign = newValue;
                       });
                     }),
-                Apptextfield.primary(
+                Apptextfield.password(
                     labelText: "Password",
                     hintText: "Enter Password",
                     controller: Passwordcontroller),
-                Apptextfield.primary(
+                Apptextfield.password(
                     labelText: "Confirm Password",
                     hintText: "Enter Password",
                     controller: confirmpasscontroller),

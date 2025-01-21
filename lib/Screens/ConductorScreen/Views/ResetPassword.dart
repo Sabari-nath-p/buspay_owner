@@ -4,9 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ResetBottom extends StatelessWidget {
-  const ResetBottom({super.key});
+class ResetBottom extends StatefulWidget {
+  ResetBottom({super.key});
 
+  @override
+  State<ResetBottom> createState() => _ResetBottomState();
+    bool _obscureText = true;
+   // bool _isLoading = false; 
+}
+
+class _ResetBottomState extends State<ResetBottom> {
   @override
   Widget build(BuildContext context) {
     return  Container(
@@ -45,8 +52,9 @@ class ResetBottom extends StatelessWidget {
                 ),
               ),
               // SizedBox(height: 2.h),
-              Apptextfield.primary(labelText:"New Password*", hintText :"Enter new password"),
-              Apptextfield.primary(labelText: "Confirm Password*",hintText:  "Confirm new password"),
+              Apptextfield.password(labelText:"New Password*", hintText :"Enter new password",)
+              ,
+              Apptextfield.password(labelText: "Confirm Password*",hintText:  "Confirm new password"),
               SizedBox(height: 9.h),
               Container(
                 width: double.infinity,

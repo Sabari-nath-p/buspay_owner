@@ -15,7 +15,24 @@ class ConductorViewScreen extends StatefulWidget {
 }
 
 class _ConductorViewScreenState extends State<ConductorViewScreen> {
+   bool isLoading = true;
+  final TextEditingController searchController = TextEditingController();
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+
+
+
+
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFFCFCFC),
@@ -40,23 +57,23 @@ class _ConductorViewScreenState extends State<ConductorViewScreen> {
               width: 352.w,
               height: 48.h,
               child: TextField(
-                controller: TextEditingController(text: '  Search Bus'),
-                enabled: false,
-                decoration: InputDecoration(
-                  hintText: 'Search Bus',
-                  suffixIcon: Icon(Icons.search, color: Colors.grey),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey.shade200,
-                  disabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.grey.shade200),
-                  ),
-                ),
-                style: GoogleFonts.poppins(color: Colors.grey),
+                controller: searchController,
+                onChanged: (value) {
+                              setState(() {});
+                            },
+                
+                             decoration: InputDecoration(
+                              hintText: 'Search Bus',
+                              suffixIcon:
+                                  Icon(Icons.search, color: Colors.grey),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide.none,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.shade200,
+                            ),
+                style: GoogleFonts.poppins(color: Colors.black),
                 keyboardType: TextInputType.text,
               ),
             ),

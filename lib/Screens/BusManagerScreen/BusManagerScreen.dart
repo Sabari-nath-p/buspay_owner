@@ -1,5 +1,6 @@
 import 'package:buspay_owner/Screens/BusManagerScreen/Controller/BManagerController.dart';
 import 'package:buspay_owner/Screens/BusManagerScreen/CreateBusScreen.dart';
+import 'package:buspay_owner/Screens/BusManagerScreen/Model/BusListModel.dart';
 import 'package:buspay_owner/Screens/BusManagerScreen/Views/BusListCard.dart';
 import 'package:buspay_owner/Src/appButtons.dart';
 import 'package:buspay_owner/Src/utils.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
- 
 
 class BusManagerScreen extends StatefulWidget {
   const BusManagerScreen({Key? key}) : super(key: key);
@@ -17,7 +17,6 @@ class BusManagerScreen extends StatefulWidget {
 }
 
 class _BusManagerScreenState extends State<BusManagerScreen> {
-  //List<dynamic> busData = [];
   bool isLoading = true;
   final TextEditingController searchController = TextEditingController();
 
@@ -38,11 +37,6 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // String query = searchController.text.toLowerCase();
-    // List<dynamic> filteredBusData = busData.where((bus) {
-    //   return bus['name'].toLowerCase().contains(query);
-    // }).toList();
-
     return Scaffold(
       backgroundColor: Color.fromRGBO(252, 252, 252, 1),
       appBar: AppBar(
@@ -64,10 +58,10 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
             : Stack(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 16, left: 9, right: 9),
+                    padding: const EdgeInsets.only(top: 20, left: 9, right: 9),
                     child: Column(
                       children: [
-                        SpacerH(5.h),
+                        //SpacerH(5.h),
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 10),
                           child: TextField(
@@ -90,19 +84,53 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
                             keyboardType: TextInputType.text,
                           ),
                         ),
-                        SizedBox(height: 12),
+                        SizedBox(height: 30),
                         Expanded(
-                            child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              for (var data in bmCtrl.busList)
-                                if (searchController.text.isEmpty ||
-                                    data.name!.toLowerCase().contains(
-                                        searchController.text.toLowerCase()))
-                                  BuslistCard(model: data)
-                            ],
-                          ),
-                        )),
+                          child: _.busList.isEmpty
+                              ? Column(
+                                  //mainAxisSize: MainAxisSize.min, 
+                                   //crossAxisAlignment: CrossAxisAlignment.center,
+                              
+                                  children: [
+                                    Image.asset(
+                                      'assets/no_buses.png', 
+                                      height: 244.h,
+                                      width:144.h
+                                    ),
+                                 
+                                    Text(
+                                      'No Bus Yet!',
+                                      style: GoogleFonts.inter(
+                                        fontSize: 16.sp,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w500
+                                      ),
+                                    ),
+                                    
+                                    Text(
+                                      'Add bus to continue',
+                                      style: GoogleFonts.inter(
+                                        fontSize: 14.sp,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w300
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      for (var data in bmCtrl.busList)
+                                        if (searchController.text.isEmpty ||
+                                            data.name!.toLowerCase().contains(
+                                                searchController.text
+                                                    .toLowerCase()))
+                                          BuslistCard(model: data)
+                                    ],
+                                  ),
+                                ),
+                        ),
+                      
                         SizedBox(
                           height: 60.h,
                         )
@@ -110,15 +138,17 @@ class _BusManagerScreenState extends State<BusManagerScreen> {
                     ),
                   ),
                   Positioned(
-                      bottom: 20.h,
-                      left: 20.w,
-                      right: 20.w,
-                      child: appButton.PrimaryButton(
-                          name: "Create Bus",
-                          onClick: () {
-                            Get.to(() =>
-                                CreateBusScreen(fetchNotifier: fetchNotifer));
-                          }))
+                    bottom: 20.h,
+                    left: 25.w,
+                    right: 25.w,
+                    child: appButton.PrimaryButton(
+                      name: "Create Bus",
+                      onClick: () {
+                        Get.to(() =>
+                            CreateBusScreen(fetchNotifier: fetchNotifer));
+                      },
+                    ),
+                  )
                 ],
               );
       }),

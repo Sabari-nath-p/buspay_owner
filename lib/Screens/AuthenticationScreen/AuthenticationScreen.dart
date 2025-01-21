@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'controller.dart';
 
@@ -15,7 +16,8 @@ class AuthenticationScreen extends StatefulWidget {
 
 class _AuthenticationScreenState extends State<AuthenticationScreen> {
   bool _obscureText = true;
-  bool _rememberMe = false;
+    bool _isLoading = false; 
+    
   final AuthenticationController _authController = AuthenticationController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -25,6 +27,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       _showSnackBar('Email and password cannot be empty');
       return;
     }
+      setState(() {
+      _isLoading = true; 
+    });
 
     try {
       final response = await _authController.login(
@@ -38,6 +43,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       }
     } catch (e) {
       _showSnackBar('An error occurred: $e');
+     } finally {
+      setState(() {
+        _isLoading = false;
+      });
+
     }
   }
 
@@ -252,7 +262,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         SizedBox(height: 24.h),
                         Center(
                           child: ElevatedButton(
-                            onPressed: handleLogin,
+                            onPressed:  _isLoading ? null : handleLogin,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFF0F67B1),
                               minimumSize: Size(double.infinity, 48.h),
@@ -269,7 +279,15 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               ),
                               elevation: 0,
                             ),
-                            child: Text(
+                            
+                         
+                        child: _isLoading
+                                ? LoadingAnimationWidget.staggeredDotsWave(
+                                    color: Colors.white,
+                                    size: 30,
+                                  
+                                  )
+                                 :  Text(
                               'Login',
                               style: GoogleFonts.poppins(
                                 color: Colors.white,

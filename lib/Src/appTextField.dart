@@ -82,5 +82,76 @@ class Apptextfield {
         SizedBox(height: 10.h),
       ],
     );
+
+
   }
+
+static Widget password({
+    required String labelText,
+    required String hintText,
+    TextEditingController? controller,
+  }) {
+    bool _obscureText = true;
+
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 5.h),
+            Text(
+              labelText,
+              style:
+                  GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w500),
+            ),
+            SizedBox(height: 8.h),
+            Container(
+              height: 48.h,
+              width: 370.w,
+              decoration: BoxDecoration(
+                color: Color(0xFFDEDEDE).withOpacity(.5),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: TextField(
+                controller: controller,
+                obscureText: _obscureText,
+                textAlign: TextAlign.start,  // Align the text to the start (left)
+                textAlignVertical: TextAlignVertical.center, 
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
+                  hintText: hintText,
+                  hintStyle: GoogleFonts.inter(
+                    color: Colors.grey[600],
+                    fontSize: 14.sp,
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                      color: Colors.grey[600],
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  ),
+                ),
+                style: GoogleFonts.inter(
+                  color: const Color.fromRGBO(27, 27, 27, 1),
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            SizedBox(height: 10.h),
+          ],
+        );
+      },
+    );
+  }
+
+
+
+
 }
