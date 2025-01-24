@@ -1,4 +1,4 @@
-import 'dart:convert';
+//import 'dart:convert';
 
 import 'package:buspay_owner/Screens/BusManagerScreen/Controller/BManagerController.dart';
 import 'package:buspay_owner/Screens/BusManagerScreen/Model/BusPreferences.dart';
@@ -8,7 +8,7 @@ import 'package:buspay_owner/Src/appDropDown.dart';
 import 'package:buspay_owner/Src/appText.dart';
 import 'package:buspay_owner/Src/appTextField.dart';
 import 'package:buspay_owner/Src/utils.dart';
-import 'package:buspay_owner/main.dart';
+//import 'package:buspay_owner/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -17,7 +17,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' ;
 
-import 'package:shared_preferences/shared_preferences.dart';
+////import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateBusScreen extends StatefulWidget {
   ValueNotifier fetchNotifier;
@@ -36,7 +36,8 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
 
   final TextEditingController busNameController = TextEditingController();
   final TextEditingController rcNumberController = TextEditingController();
-  final TextEditingController seatingCapacityController = TextEditingController();
+  final TextEditingController seatingCapacityController =
+      TextEditingController();
 
   void toggleBusPreference(preference) {
     setState(() {
@@ -82,12 +83,12 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
         backgroundColor: const Color.fromRGBO(15, 103, 177, 1),
         title: appText.primaryText(
          text: 'Create Bus',
-          
+
             color: Colors.white,
             // fontFamily: "Poppins",
             fontWeight: FontWeight.w600,
             fontSize: 21,
-          
+
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_outlined,
@@ -159,12 +160,12 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
               ),
               appText.primaryText(
                 text:'Bus Preference*',
-               
+
                   //   fontFamily: "Inter",
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: Color.fromRGBO(9, 10, 10, 1),
-                
+
               ),
               SizedBox(height: 8.h),
               Wrap(
@@ -187,7 +188,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                         border: Border.all(
                           color: isSelected
                               ? const Color.fromRGBO(15, 103, 177, 1)
-                              : const Color.fromRGBO(242, 244, 245, 1),
+                                 : const Color.fromRGBO(242, 244, 245, 1),
                         ),
                       ),
                       child: Text(

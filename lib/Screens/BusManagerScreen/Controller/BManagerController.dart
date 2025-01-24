@@ -21,7 +21,8 @@ class BMController extends GetxController {
     update();
     final String apiUrl = '$baseUrl/v1/bus';
     try {
-      final response = await get(Uri.parse(apiUrl));
+      final response = await get(Uri.parse(apiUrl),headers: authHeader);
+       print('Bus Data Response: ${response.body}');
       if (response.statusCode == 200) {
         for (var data in jsonDecode(response.body)['data']) {
           busList.add(BusListModel.fromJson(data));
@@ -37,7 +38,8 @@ class BMController extends GetxController {
   }
 
   Future<void> fetchBusPreferences() async {
-    final response = await get(Uri.parse(baseUrl + '/v1/preference'));
+    final response = await get(Uri.parse(baseUrl + '/v1/preference'), headers: authHeader);
+     print('Bus Preferences Response: ${response.body}');
     if (response.statusCode == 200) {
       for (var data in json.decode(response.body)["data"])
         preferenceList.add(BusPreferences.fromJson(data));
@@ -46,6 +48,7 @@ class BMController extends GetxController {
     }
 
     update();
+    print('Response: ${response.body}');
   }
 
   Future<void> createBus(var busData) async {
@@ -54,16 +57,20 @@ class BMController extends GetxController {
     try {
       final response = await post(
         Uri.parse(baseUrl + '/v1/bus'),
+    
         headers: authToken,
         body: json.encode(busData),
       );
-
+      
       if (response.statusCode == 201) {
         Get.back();
         fetchBusData();
       } else {
         Fluttertoast.showToast(msg: "'Error: ${response.body}'");
+       
       }
+       print("Response:${response.body}");
+
     } catch (e) {
       Fluttertoast.showToast(msg: "Failed to create bus. Please try again.");
     }

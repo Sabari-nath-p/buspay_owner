@@ -29,14 +29,18 @@ class DBController extends GetxController {
   }
 
   Future<void> fetchBusTypes() async {
-    final response = await get(Uri.parse(baseUrl + '/v1/bus-type'));
+    print(authHeader);
+    final response = await get(Uri.parse(baseUrl + '/v1/bus-type',),headers: authHeader);
+      print('Bus type Response: ${response.body}');
     if (response.statusCode == 200) {
       // busTypes = json.decode(response.body)['data'];
 
       for (var data in json.decode(response.body)["data"])
         bustypes.add(BusTypeModel.fromJson(data));
     } else {
-      throw Exception('Failed to load bus types');
+      print(response.body);
+      print(response.statusCode);
+     // throw Exception('Failed to load bus types');
     }
     update();
   }
