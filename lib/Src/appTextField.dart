@@ -41,7 +41,7 @@ class Apptextfield {
   static Widget primary({
     required String labelText,
     required String hintText,
-    TextEditingController? controller,
+    TextEditingController? controller, Function(String)? onChanged,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

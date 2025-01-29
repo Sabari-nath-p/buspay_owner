@@ -1,40 +1,70 @@
 import 'dart:convert';
-import 'package:buspay_owner/Screens/OwnerProfileScreen/OwnerProfileScreen.dart';
+import 'package:buspay_owner/Screens/BusManagerScreen/Controller/BManagerController.dart';
+import 'package:buspay_owner/Screens/BusManagerScreen/Model/BusListModel.dart';
+import 'package:buspay_owner/Screens/BusManagerScreen/Model/BusModel.dart';
+import 'package:buspay_owner/Screens/BusManagerScreen/Model/BusPreferences.dart';
+import 'package:buspay_owner/Screens/DashboardScreen/Controllers/DBController.dart';
+import 'package:buspay_owner/Src/appButtons.dart';
+import 'package:buspay_owner/Src/appText.dart';
+import 'package:buspay_owner/Src/appTextField.dart';
+import 'package:buspay_owner/main.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 
 class AddBusRouteBottomSheet extends StatefulWidget {
   const AddBusRouteBottomSheet({Key? key}) : super(key: key);
 
   @override
-  _AddBusRouteBottomSheetState createState() => _AddBusRouteBottomSheetState();
+  _AddBusRouteBottomSheetState createState() =>
+      _AddBusRouteBottomSheetState();
 }
 
 class _AddBusRouteBottomSheetState extends State<AddBusRouteBottomSheet> {
   List<String> selectedDays = [];
+  List<RouteBus> routeList = [];
+  int? selectedRouteId;  // Track the selected route id
   var busData;
 
   TextEditingController startTimeController = TextEditingController();
   TextEditingController finishTimeController = TextEditingController();
   TextEditingController routeSearchController = TextEditingController();
-  List<dynamic> routeList = [];
+
+  final BMController _bmController = Get.find<BMController>();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchRouteList();
+  }
+
+  void _fetchRouteList() {
+    // Fetch the bus data and extract the RouteBus data from the BusModel
+    busData = _bmController.busList; // Get the bus data from the controller
+    if (busData.isNotEmpty) {
+      setState(() {
+        routeList = busData[0].routeBus ?? []; // Assuming the busData has routeBus data
+      });
+    }
+  }
 
   void _submitRoute(BuildContext context) async {
     const String apiUrl = "http://api.buspay.co/v1/route-bus";
 
     // Data to send
     Map<String, dynamic> requestData = {
-      "bus_id": busData["id"],
-      "route_id": 1,
+      "bus_id": busData[0].id,  // Use the bus ID
+      "route_id": selectedRouteId, // Use selectedRouteId
       "start_timing": startTimeController.text,
       "days_of_week": selectedDays,
       "finish_timing": finishTimeController.text,
     };
 
     try {
-      final response = await http.post(
+      final response = await post(
         Uri.parse(apiUrl),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(requestData),
@@ -52,39 +82,7 @@ class _AddBusRouteBottomSheetState extends State<AddBusRouteBottomSheet> {
     }
   }
 
-//label
-  Widget _buildLabel(String text) {
-    return Text(
-      text,
-      style: GoogleFonts.poppins(
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-      ),
-    );
-  }
-
-//  TextField
-  Widget _buildTextField(String hint, TextEditingController controller) {
-    return Container(
-      width: double.infinity,
-      height: 48,
-      child: TextField(
-        controller: TextEditingController(text: hint),
-        decoration: InputDecoration(
-          hintText: hint,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide.none,
-          ),
-          filled: true,
-          fillColor: Colors.grey.shade200,
-        ),
-        style: GoogleFonts.poppins(color: Colors.grey),
-      ),
-    );
-  }
-
-//dayselector
+  // Day selector widget
   Widget _buildDaySelector(dynamic func) {
     List<String> days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -96,15 +94,12 @@ class _AddBusRouteBottomSheetState extends State<AddBusRouteBottomSheet> {
 
         return GestureDetector(
           onTap: () {
-            print("workingsss");
-
             if (isSelected) {
               selectedDays.remove(day);
             } else {
               selectedDays.add(day);
             }
             func(() {});
-            print(selectedDays);
           },
           child: Container(
             height: 33,
@@ -130,61 +125,63 @@ class _AddBusRouteBottomSheetState extends State<AddBusRouteBottomSheet> {
     );
   }
 
-//  Route List
+  // Route list builder widget
   Widget _buildRouteList() {
-    return ListView.builder(
-      itemCount: 3,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(
-            'Haripad → Alappuzha',
-            style: GoogleFonts.poppins(
-              // fontFamily: "Lato",
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Color.fromRGBO(96, 96, 96, 1),
-            ),
-          ),
-          leading: Radio(
-            value: index + 1,
-            groupValue: 1,
-            onChanged: (value) {},
-          ),
-        );
-      },
-    );
-  }
-
-//  Elevated Button
-  Widget _buildElevatedButton(
-      {required String label, required VoidCallback onPressed}) {
     return SizedBox(
-      width: double.infinity,
-      height: 40,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromRGBO(15, 103, 177, 1),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        child: Text(
-          label,
-          style: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            // fontFamily: "Poppins",
-            color: Colors.white,
-          ),
-        ),
+      height: 150.h, // Set an appropriate height
+      child: ListView.builder(
+        shrinkWrap: true,  // Ensure it wraps its content when nested
+        physics: NeverScrollableScrollPhysics(), // Disable scrolling inside SingleChildScrollView
+        itemCount: routeList.length,
+        itemBuilder: (context, index) {
+          final route = routeList[index];
+          return ListTile(
+            title: Text(
+              '${route.startTiming} → ${route.finishTiming}',
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Color.fromRGBO(96, 96, 96, 1),
+              ),
+            ),
+            subtitle: Text(
+              'Days: ${route.daysOfWeek!.join(', ')}',
+              style: GoogleFonts.poppins(
+                fontSize: 12,
+                fontWeight: FontWeight.w300,
+                color: Color.fromRGBO(128, 128, 128, 1),
+              ),
+            ),
+            leading: Radio(
+              value: route.id,
+              groupValue: selectedRouteId, // Track the selected route
+              onChanged: (value) {
+                setState(() {
+                  selectedRouteId = value as int?;
+                });
+              },
+            ),
+          );
+        },
       ),
     );
   }
 
+  // Function to filter routes based on the search query
+  void _filterRoutes(String query) {
+    List<RouteBus> filteredRoutes = busData[0].routeBus!.where((route) {
+      return route.startTiming!.toLowerCase().contains(query.toLowerCase()) ||
+          route.finishTiming!.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+
+    setState(() {
+      routeList = filteredRoutes;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 400.h,
       width: 390.w,
       child: Padding(
@@ -213,30 +210,42 @@ class _AddBusRouteBottomSheetState extends State<AddBusRouteBottomSheet> {
                   ],
                 ),
               ),
-              const SizedBox(height: 23),
-              _buildLabel('Starting Time'),
-              const SizedBox(height: 8),
-              _buildTextField('12:00:00 PM', startTimeController),
-              const SizedBox(height: 23),
-              _buildLabel('Finishing Time'),
-              const SizedBox(height: 8),
-              _buildTextField('12:00:00 PM', finishTimeController),
-              const SizedBox(height: 16),
-              _buildLabel('Trip Day'),
-              const SizedBox(height: 8),
-              _buildDaySelector(setState),
-              const SizedBox(height: 16),
-              _buildLabel('Select Route'),
-              const SizedBox(height: 8),
-              _buildTextField('Search Route', routeSearchController),
-              const SizedBox(height: 8),
-              _buildRouteList(),
-              const SizedBox(height: 16),
-              Center(
-                child: _buildElevatedButton(
-                  label: 'Add Route',
-                  onPressed: () => _submitRoute(context),
-                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20),
+                  Apptextfield.primary(
+                    hintText: '12:00:00 PM',
+                    controller: startTimeController,
+                    labelText: 'Starting Time',
+                  ),
+                  Apptextfield.primary(
+                    hintText: '12:00:00 PM',
+                    controller: finishTimeController,
+                    labelText: 'Finishing Time',
+                  ),
+                  const SizedBox(height: 10),
+                  appText.primaryText(text: 'Trip Day'),
+                  const SizedBox(height: 8),
+                  _buildDaySelector(setState),
+                  const SizedBox(height: 16),
+                  Apptextfield.primary(
+                    labelText: 'Search Route',
+                    hintText: "Search route",
+                    controller: routeSearchController,
+                    onChanged: _filterRoutes, // This now works with the corrected _filterRoutes
+                  ),
+                  const SizedBox(height: 8),
+                  _buildRouteList(),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: appButton.PrimaryButton(
+                      name: 'Add Route',
+                      onClick: () => _submitRoute(context),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

@@ -2,7 +2,7 @@ import 'package:buspay_owner/Screens/BusManagerScreen/BottomSheetScreen.dart';
 import 'package:buspay_owner/Screens/BusManagerScreen/BusManagerScreen.dart';
 import 'package:buspay_owner/Screens/BusManagerScreen/Controller/BManagerController.dart';
 import 'package:buspay_owner/Screens/BusManagerScreen/Model/BusModel.dart';
-import 'package:buspay_owner/Screens/BusManagerScreen/Views/addBusRoute.dart';
+
 import 'package:buspay_owner/Screens/DashboardScreen/Controllers/DBController.dart';
 import 'package:buspay_owner/Screens/OwnerProfileScreen/OwnerProfileScreen.dart';
 import 'package:buspay_owner/Src/appText.dart';
@@ -58,8 +58,9 @@ class BusRouteListView extends StatelessWidget {
                   child: TextButton(
                     onPressed: () {
                       //_showBottomSheet(context);
-                      Get.bottomSheet(AddBusRouteSheet(),
-                          backgroundColor: Colors.white);
+                      Get.bottomSheet(AddBusRouteBottomSheet(),
+                    // Get.to(() => AddBusRouteBottomSheet());
+                         backgroundColor: Colors.white);
                     },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
